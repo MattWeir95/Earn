@@ -28,20 +28,18 @@ class ManageTeamInvoiceApi extends Component
 
     public function render()
     {
-        $services = InvoiceServiceToken::all();
+        $services = InvoiceServiceToken::select('app_name')->where('team_id' ,$this->team->id)->get();
         return view('livewire.teams.manage-team-invoice-api', [
             'services' => $services
         ]);
     }
 
-    public function signout()
+    public function signout($service)
     {
-        //Reaches here when no params are passed, following livewire guide (https://laravel-livewire.com/docs/2.x/actions#action-parameters)
+         $deleteQuery = InvoiceServiceToken::where(['app_name' => $service, 'team_id' => $this->team->id])
+             ->delete();
 
-        return redirect('/testing');
-        // $deleteQuery = InvoiceServiceToken::where(['name' => $service, 'team_id' => $this->team->id])
-        //     ->first()
-        //     ->delete();
+        return back();
             
     }
 }

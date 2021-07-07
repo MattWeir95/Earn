@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Teams;
 use Livewire\Component;
 use App\Models\InvoiceService;
 use App\Models\InvoiceServiceToken;
+use App\Http\Controllers\XeroController;
 
 class AddTeamInvoiceApi extends Component
 {
@@ -26,23 +27,20 @@ class AddTeamInvoiceApi extends Component
         $this->team = $team;
     }
 
-
-
     public function render()
     {
-        $allServices = InvoiceService::all();
-        $activeServices = InvoiceServiceToken::where('team_id' ,$this->team->id)->get();
-
-        $diff = $allServices->diff($activeServices)->all();
-
+        $activeServices = InvoiceServiceToken::select('app_name')->where('team_id' ,$this->team->id)->get();
+        $unactiveServices = InvoiceService::select('app_name')->whereNotIn('app_name', $activeServices)->get();
+        
         return view('livewire.teams.add-team-invoice-api', [
-            'services' => $diff
+            'services' => $unactiveServices
         ]);
     }
 
-    public function signin($name)
+    public function signin($service)
     {
-        return redirect('/test');
+        $test = new XeroController;
+        $test->redirectUserToXero();
     }
 
 }

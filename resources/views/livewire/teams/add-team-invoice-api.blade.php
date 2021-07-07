@@ -10,10 +10,10 @@
             <div class="grid grid-cols-6">
                 @foreach ($services as $service)
                     <div class="col-start-1 col-span-3">
-                        <x-jet-label value="{{ $service->name }}" />
+                        <x-jet-label value="{{ $service->app_name }}" />
                     </div>
                     <div class="col-start-5 col-span-2 mb-2">
-                        <x-jet-button wire:click="signin({{ $service->name }})"> {{ __('Sign In') }} </x-jet-button>  
+                        <x-jet-button wire:click="signin({{ $service }})"> {{ __('Sign In') }} </x-jet-button>  
                     </div>
                 @endforeach
             </div>
