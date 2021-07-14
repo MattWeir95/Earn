@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InvoiceService;
 use Illuminate\Http\Request;
 use LangleyFoxall\XeroLaravel\OAuth2;
 use League\OAuth2\Client\Token\AccessToken;
@@ -33,13 +34,10 @@ class XeroController extends Controller
 
         // Step 4 - Store the access token and selected tenant ID against the user's account for future use.
         // You can store these anyway you wish. For this example, we're storing them in the database using Eloquent.
-
         $teamId = auth()->user()->currentTeam->id;
-        $inputs = ['team_id' => $teamId, 'app_id' => $selectedTenant->tenantId, 'app_name' => 'Xero', 'access_token' => json_encode($accessToken)];
+        $xeroId = InvoiceService::where('app_name', 'Xero')->get()->toArray();
+        $inputs = ['team_id' => $teamId, 'app_id' => $xeroId[0]['id'], 'api_id' => $selectedTenant->tenantId, 'app_name' => 'Xero', 'access_token' => json_encode($accessToken)];
         InvoiceServiceToken::create($inputs); 
-        // $team->access_token = json_encode($accessToken);
-        // $team->app_id = $selectedTenant->tenantId;
-        // $team->save();
     }
 
     public function refreshAccessTokenIfNecessary()

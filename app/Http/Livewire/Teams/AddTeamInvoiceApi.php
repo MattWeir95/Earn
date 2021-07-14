@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\InvoiceService;
 use App\Models\InvoiceServiceToken;
 use App\Http\Controllers\XeroController;
+use Symfony\Component\VarDumper\VarDumper;
 
 class AddTeamInvoiceApi extends Component
 {
@@ -37,8 +38,10 @@ class AddTeamInvoiceApi extends Component
         ]);
     }
 
+    //Define different service sign ins here.
     public function signin($service)
     {
+        //Bug here where I can't get it to read the service name. By default everything takes you to xero currently.
         $test = new XeroController;
         $test->redirectUserToXero();
     }

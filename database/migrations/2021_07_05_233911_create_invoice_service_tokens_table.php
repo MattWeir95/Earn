@@ -16,11 +16,13 @@ class CreateInvoiceServiceTokensTable extends Migration
         Schema::create('invoice_service_tokens', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('team_id')->unsigned();
-            $table->string('app_id');
+            $table->bigInteger('app_id')->unsigned();
+            $table->string('api_id');
             $table->string('app_name');
             $table->json('access_token');
             $table->timestamps();
             $table->foreign("team_id")->references("id")->on("teams");
+            $table->foreign("app_id")->references("id")->on("invoice_services");
         });
     }
 

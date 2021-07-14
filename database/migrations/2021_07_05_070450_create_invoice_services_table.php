@@ -16,7 +16,6 @@ class CreateInvoiceServicesTable extends Migration
         Schema::create('invoice_services', function (Blueprint $table) {
             $table->id();
             $table->string('app_name');
-            $table->string('invoiceEndpoint');
             $table->timestamps();
         });
     }

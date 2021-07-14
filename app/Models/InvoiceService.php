@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceService extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'app_name'
+    ];
 }
