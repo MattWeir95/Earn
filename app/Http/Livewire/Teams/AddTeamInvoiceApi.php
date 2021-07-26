@@ -41,9 +41,16 @@ class AddTeamInvoiceApi extends Component
     //Define different service sign ins here.
     public function signin($service)
     {
-        //Bug here where I can't get it to read the service name. By default everything takes you to xero currently.
-        $test = new XeroController;
-        $test->redirectUserToXero();
+        $service = InvoiceService::select('app_name')->where('app_name', $service)->first();
+
+        switch($service["app_name"]){
+            case "Xero":
+                $x = new XeroController;
+                $x->redirectUserToXero();
+                break;
+            default:
+                back();
+        }
     }
 
 }

@@ -40,6 +40,8 @@ class XeroController extends Controller
         InvoiceServiceToken::create($inputs); 
     }
 
+    //NEED TO MODIFY THIS FUNCTION TO SUIT IMPLEMENTATION
+    //----------------------------------------------------
     public function refreshAccessTokenIfNecessary()
     {
         // Step 5 - Before using the access token, check if it has expired and refresh it if necessary.

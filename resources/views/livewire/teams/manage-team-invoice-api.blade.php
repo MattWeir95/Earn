@@ -14,12 +14,14 @@
                     <div class="col-start-1 col-span-3">
                         <x-jet-label value="{{ $service->app_name }}" />
                     </div>
-                    <div class="col-start-5 col-span-2 mb-2">
+                    <div class="col-start-6 mb-2">
                         <x-jet-button wire:click="signout({{ $service }})"> {{ __('Sign Out') }} </x-jet-button>        
                     </div>
                     @endforeach
                 @else
+                <div class="col-start-1 col-span-3">
                 <x-jet-label class="mb-6" value="{{ __('No Active Services') }}" /> 
+                </div>
                 @endif
                 
             </div>

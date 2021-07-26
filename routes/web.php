@@ -19,7 +19,7 @@ use App\Http\Controllers\XeroController;
 Route::get('/login/xero', function(Request $request) {
     $instance = new XeroController;
     $instance->handleCallbackFromXero($request);
-    return view('welcome');
+    return view('dashboard');
 });
 
 Route::get('/', function () {
