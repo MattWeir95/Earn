@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use App\Http\Controllers\XeroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+Route::get('/login/xero', function(Request $request) {
+    $instance = new XeroController;
+    $instance->handleCallbackFromXero($request);
+    return redirect('/dashboard');
+});
 
 Route::get('/', function () {
     return view('welcome');

@@ -11,6 +11,12 @@
 
             @livewire('teams.team-member-manager', ['team' => $team])
 
+            <x-jet-section-border />
+            @livewire('teams.manage-team-invoice-api', ['team' => $team])
+
+            <x-jet-section-border />
+            @livewire('teams.add-team-invoice-api', ['team' => $team]) 
+
             @if (Gate::check('delete', $team) && ! $team->personal_team)
                 <x-jet-section-border />
 
