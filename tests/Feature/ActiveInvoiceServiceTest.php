@@ -45,6 +45,7 @@ class ActiveInvoiceServiceTest extends TestCase
                     ->assertDontSee($service->app_name);            
 
         $inputs = ['team_id' => $user->currentTeam->id, 'app_id' => $service->id, 'api_id' => '1234', 'app_name' => $service->app_name, 'access_token' => '5678'];
+        
         InvoiceServiceToken::create($inputs); 
         
         Livewire::test(AddTeamInvoiceApi::class, ['team' => $user->currentTeam])
@@ -55,4 +56,6 @@ class ActiveInvoiceServiceTest extends TestCase
                     ->call('render')
                     ->assertSee($service->app_name);
     }
+
 }
+

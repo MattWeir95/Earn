@@ -23,6 +23,7 @@ class RegistrationTest extends TestCase
             'first_name' => 'test_first',
             'last_name' => 'test_last',
             'email' => 'test@example.com',
+            'timezone' => 'Europe/Amsterdam',
             'password' => 'password',
             'password_confirmation' => 'password',
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature(),
