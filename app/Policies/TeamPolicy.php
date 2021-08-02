@@ -103,4 +103,15 @@ class TeamPolicy
     {
         return $user->ownsTeam($team);
     }
+
+    /**
+     * Determine whether the user owns the team.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Team  $team
+     * @return mixed
+     */
+    public function isManager(User $user, Team $team){
+        return $user->ownsTeam($team);
+    }
 }
