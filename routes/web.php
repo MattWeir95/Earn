@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\XeroController;
+use App\Http\Controllers\ParsingController;
+
+use App\Classes\InvoiceGenerator;
+
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +29,20 @@ Route::get('/login/xero', function(Request $request) {
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/parse', function(Request $req) {
+    /*
+    Parses and saves a random invoice
+    */
+    if (count(User::all()) == 0) {
+        User::factory()->withPersonalTeam()->create();
+    }
+    $generator = new InvoiceGenerator;
+    [$item, $invoice] = $generator->getPair();
+    $result = ParsingController::parseLineItem($item);
+    ParsingController::saveInvoice($result);
+    return;
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
