@@ -27,8 +27,14 @@ class TeamUserFactory extends Factory
         return [
             'team_id' => 0,
             'user_id' => 0,
-            'role' => null
+            'role' => 'editor'
         ];
+    }
+
+    public function asManager() {
+        return $this->state([
+            'role' => 'administrator'
+        ]);
     }
 
 }

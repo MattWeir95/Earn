@@ -8,11 +8,13 @@ use App\Models\User;
 use App\Models\History;
 use App\Models\Sales;
 use XeroPHP\Models\Accounting\LineItem;
-
+use App\Classes\InvoiceGenerator;
 use Carbon\Carbon;
 
 class ParsingController extends Controller
 {
+    protected $gen = new InvoiceGenerator;
+
     public static function parseLineItem(LineItem $item, $api_team_origin = 1)
     {
         /*
@@ -62,7 +64,15 @@ class ParsingController extends Controller
         Sales::create([
             'team_user_id' => $invoice->team_user->id,
             'service_name' => $invoice->service_name,
-            'service_cost' => $invoice->service_cost
+            'service_cost' => $invoice->service_cost,
+            'commission_earned' => $invoice->service_cost*0.1
         ]);
+    }
+
+    public static function fetchInvoices() {
+        /*
+        Check for any new invoices from API
+        */
+        
     }
 }

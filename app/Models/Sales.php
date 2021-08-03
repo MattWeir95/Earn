@@ -15,6 +15,7 @@ class Sales extends Model
         'id',
         'team_user_id',
         'service_name',
-        'service_cost'
+        'service_cost',
+        'commission_paid'
     ];
 }
