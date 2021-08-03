@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\XeroController;
 use App\Http\Controllers\NewRuleController;
+use App\Http\Controllers\ViewRuleController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,9 +34,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
-//Temporary Routes to test the new rule modal feature
-Route::get('newRuleModal', function() {
-    return view('livewire/managers/rules/new-rule-modal');
+//Rule screen route to test components
+Route::get('ruleScreen', function() {
+    return view('livewire/managers/rules/ruleScreen');
 });
 
-Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] );
+//Post for adding a new rule
+Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] )->name('newRule');
