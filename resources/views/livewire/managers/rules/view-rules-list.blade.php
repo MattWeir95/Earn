@@ -9,11 +9,11 @@
         
 
         {{-- Rule list --}}
-        <div class="w-11/12 overflow-scroll max-h-60 md:max-h-full">
+        <div x-data class="w-11/12 overflow-scroll max-h-60 md:max-h-full">
 
             <table class="w-11/12">
                 {{-- Rule List Headings --}}
-                <tr class="text-white ">
+                <tr class="text-white font-bold ">
                     <td class="">Name</td>
                     <td class="text-center pr-5">Active</td>
                     <td class="text-right">%</td>
@@ -21,7 +21,7 @@
                 {{-- Rules --}}
                 @foreach ($rules as $rule )
                 <tr  class="border-b border-white text-white">
-                    <td  class=""><button class="font-bold">{{ $rule->rule_name }}</button></td>
+                    <td class=""><button @click="$dispatch('custom-sendrule', {message: {{ $rule }}})" class="">{{ $rule->rule_name }}</button></td>
                     <td class="text-center pr-5">{{ $rule->active ? 'Yes' : 'No' }}</td>
                     <td class="text-right">{{ $rule->percentage }}</td>
                 </tr>
@@ -39,5 +39,7 @@
 
     </div>
 </div>
+
+
 
 
