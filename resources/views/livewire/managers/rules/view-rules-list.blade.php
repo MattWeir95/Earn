@@ -2,11 +2,11 @@
 {{-- absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full  --}}
 <div x-data class="">
     <div
-        class="flex flex-col items-center border border-2 border-white rounded-lg bg-gradient-to-b pb-3 pt-2 from-indigo-300 to-indigo-400 max-h-60">
+        class="flex flex-col items-center border border-2 border-white p-3 rounded-lg bg-gradient-to-b from-indigo-300 to-indigo-400 max-h-60 md:max-h-full">
 
         @if(!$rules->isEmpty())
         {{-- Rule List Headings --}}
-        <div class="mb-2 ml-4 w-11/12">
+        <div class="mb-2 ml-5 w-11/12">
             <table class="w-11/12 ">
                 <tr class="text-white ">
                     <td class="">Name</td>
@@ -18,12 +18,12 @@
         </div>
 
         {{-- Rule list --}}
-        <div class="ml-4 w-11/12 overflow-scroll max-h-60">
+        <div class="ml-4 w-11/12 overflow-scroll max-h-60 md:max-h-full">
             <table class="w-11/12">
                 @foreach ($rules as $rule )
                 <tr  class="border-b border-white text-white ">
                     <td  class="pr-2"><button>{{ $rule->rule_name }}</button></td>
-                    <td class="pr-4  ">{{ $rule->active ? 'Yes' : 'No' }}</td>
+                    <td class="text-left  ">{{ $rule->active ? 'Yes' : 'No' }}</td>
                     <td class="text-right">{{ $rule->percentage }}</td>
                 </tr>
                 @endforeach

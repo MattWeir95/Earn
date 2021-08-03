@@ -4,7 +4,7 @@
 
 <div x-data="{selectedRule = empty}"
 @custom-new-rule-modal.window="isOpen = true"
-    class="flex flex-col items-center border border-2 border-white rounded-lg p-3 bg-gradient-to-b from-indigo-300 to-indigo-400">
+    class="flex flex-col items-center border border-2 border-white rounded-lg p-2 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
 
     <form class="">

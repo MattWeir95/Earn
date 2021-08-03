@@ -4,12 +4,12 @@ $user = Auth::user()
 @endphp
     @if (Gate::check('isManager', $user->currentTeam))
 
-    <div class="flex flex-col mt-10 justify-center items-center">
-        <div  class="w-11/12 mb-4">
+    <div class="flex flex-col mt-10 justify-center items-center md:flex-row">
+        <div  class="w-11/12 mb-4 md:mb-0 md:mx-4">
             @livewire('managers.rules.view-rules-list' ,['team' => $user->currentTeam])
 
         </div>
-        <div class="w-11/12">
+        <div class="w-11/12 md:mx-4">
             @livewire('managers.rules.edit-rules', ['team' => $user->currentTeam])
         </div>
 
