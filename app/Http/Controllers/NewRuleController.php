@@ -26,6 +26,6 @@ class NewRuleController extends Controller
         $rule->save();
         
         
-        return redirect('ruleScreen');
+        return redirect('rules');
     }
 }

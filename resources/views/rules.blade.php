@@ -1,6 +1,13 @@
 <x-app-layout>
-    @if (Gate::check('isManager', Auth::user()->currentTeam))
-    <h1>Rules Page</h1>
+@php
+$user = Auth::user()
+@endphp
+    @if (Gate::check('isManager', $user->currentTeam))
+
+    @livewire('managers.rules.view-rules-list' ,['team' => $user->currentTeam])
+
+
+    @livewire('managers.rules.new-rule-modal', ['team' => $user->currentTeam])
     @else
     <script>window.location = "/dashboard";</script>
     @endif
