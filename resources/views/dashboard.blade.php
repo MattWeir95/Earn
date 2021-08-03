@@ -1,16 +1,15 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                {{-- <x-jet-welcome /> --}}
-                @livewire('managers.team-list', ['team' => Auth::user()->currentTeam])
-            </div>
+        <div>
+            @if (Gate::check('isManager', Auth::user()->currentTeam))
+                <div>
+                    {{-- ADD LIVEWIRE COMPONENTS HERE --}}
+                    <h1>Manager Homepage</h1>
+                </div>
+            @else
+                <div>
+                    {{-- ADD LIVEWIRE COMPONENTS HERE --}}
+                    <h1>Employee Homepage</h1>
+                </div>
+            @endif
         </div>
-    </div>
 </x-app-layout>

@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\XeroController;
 use App\Http\Controllers\ParsingController;
-
 use App\Classes\InvoiceGenerator;
-
 use App\Models\User;
+use App\Http\Controllers\NewRuleController;
+use App\Http\Controllers\ViewRuleController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,3 +49,18 @@ Route::get('/parse', function(Request $req) {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/rules', function () {
+    return view('rules');
+})->name('rules');
+
+//Rule screen route to test components
+Route::get('ruleScreen', function() {
+    return view('livewire/managers/rules/ruleScreen');
+});
+
+//Post for adding a new rule
+Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] )->name('newRule');
+
+
