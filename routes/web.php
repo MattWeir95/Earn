@@ -31,9 +31,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/rules', function () {
+    return view('rules');
+})->name('rules');
+
 //Temporary Routes to test the new rule modal feature
 Route::get('newRuleModal', function() {
     return view('livewire/managers/rules/new-rule-modal');
 });
 
 Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] );
+
