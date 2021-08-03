@@ -2,16 +2,18 @@
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
 
-<div class="flex justify-center items-center">
+<div x-data="{isOpen: false}" x-show="isOpen" @keydown.escape.window="isOpen = false"
+    @custom-new-rule-modal.window="isOpen = true"
+    class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8/12" >
 
-    <div class="bg-white border-2 border-gray-200 w-8/12 rounded md:w-3/12">
+    <div class="bg-white border-2 border-gray-200  rounded">
 
-        <div class="flex flex-row justify-between mx-2">
+        <div @click="isOpen= false" class="flex flex-row justify-between mx-2">
             <h1 class="font-bold">New Rule</h1>
             <button>X</button>
         </div>
 
-        <form method="POST" action="addNewRule">
+        <form action={{ route('newRule') }} method="POST">
             @csrf
             <div class="mx-4 mt-4">
                 <label for="rule_name">Rule Name</label>
@@ -31,13 +33,15 @@
                 <input id="commision_amount" name="percentage" type="number" class="mt-1 w-full rounded" />
             </div>
 
-            <div class="flex justify-center mt-4 mb-2">
-                <button type="submit"
+            <div  class="flex justify-center mt-4 mb-2">
+                <button
                     class="text-blue-400 border border-blue-400 rounded-lg px-2 mx-2 transform hover:bg-blue-400 hover:text-white pb-1">Save</button>
-                <button type="cancel"
+                <button type="button" @click="isOpen = false"
                     class="bg-blue-400 text-white rounded-lg px-2 mx-2 hover:bg-white hover:text-blue-400 hover:border border-blue-400 border pb-1">Cancel</button>
 
             </div>
         </form>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>

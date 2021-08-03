@@ -13,22 +13,19 @@ class NewRuleController extends Controller
 
         $rule = new Rule;
 
-        //Setting fields
+        //Setting fields to go into the rule table
         $rule->team_id = auth()->user()->currentTeam->id;
         $rule->rule_name=$req->rule_name;
-
-        //Rule is default inactive until set active by manager
-        $rule->active=false;
-
-        
+        //Rule is default active until changed by manager
+        $rule->active=true;
         $rule->start_date=$req->start_date;
         $rule->end_date=$req->end_date;
         $rule->percentage=$req->percentage;
 
 
         $rule->save();
-
-        //Have it returning to the view for testing purposes.
-        return redirect('newRuleModal');
+        
+        
+        return redirect('ruleScreen');
     }
 }
