@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Rule;
 
 
-class NewRuleController extends Controller
+class RuleController extends Controller
 {
     function insertRule(Request $req){
 

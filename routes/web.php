@@ -6,8 +6,7 @@ use App\Http\Controllers\XeroController;
 use App\Http\Controllers\ParsingController;
 use App\Classes\InvoiceGenerator;
 use App\Models\User;
-use App\Http\Controllers\NewRuleController;
-use App\Http\Controllers\ViewRuleController;
+use App\Http\Controllers\RuleController;
 
 
 /*
@@ -57,6 +56,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/rules', function () {
 
 
 //Post for adding a new rule
-Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] )->name('newRule');
+Route::post('addNewRule',[RuleController:: class, 'insertRule'] )->name('newRule');
 
 
