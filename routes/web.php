@@ -34,6 +34,11 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/rules', function () {
+    return view('rules');
+})->name('rules');
+
 //Rule screen route to test components
 Route::get('ruleScreen', function() {
     return view('livewire/managers/rules/ruleScreen');
@@ -41,3 +46,5 @@ Route::get('ruleScreen', function() {
 
 //Post for adding a new rule
 Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] )->name('newRule');
+
+
