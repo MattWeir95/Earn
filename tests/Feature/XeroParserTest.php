@@ -11,7 +11,7 @@ use App\Http\Controllers\ParsingController;
 
 class XeroParserTest extends TestCase
 {
-    // use ResfreshDatabase;
+    use RefreshDatabase;
     /**
      * Test the parser using 100 different invoices.
      *
