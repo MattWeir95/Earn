@@ -1,7 +1,3 @@
-<head>
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-</head>
-@if(!$rules->isEmpty())
 <div
     class="flex flex-col items-center border border-2 border-white rounded-lg p-2 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
@@ -43,6 +39,6 @@
         </div>
     </form>
 </div>
-@endif
+
 
 <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
