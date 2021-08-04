@@ -12,10 +12,10 @@ class Sales extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id',
         'team_user_id',
         'service_name',
         'service_cost',
-        'commission_paid'
+        'commission_paid',
+        'date'
     ];
 }

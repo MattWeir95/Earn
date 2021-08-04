@@ -18,6 +18,8 @@ class CreateSalesTable extends Migration
             $table->integer('team_user_id');
             $table->string('service_name');
             $table->double('service_cost');
+            $table->double('commission_paid');
+            $table->dateTime('date');
         });
     }
 
