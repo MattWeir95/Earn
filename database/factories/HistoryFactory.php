@@ -23,8 +23,8 @@ class HistoryFactory extends Factory
     {
         return [
             'team_user_id' => null,
-            'start_time' => now(),
-            'end_time' => now(),
+            'start_time' => now('AEST')->startOfMonth(),
+            'end_time' => now('AEST')->endOfMonth(),
             'total_commission' => null,
             'flagged' => FALSE,
             'approved' => FALSE

@@ -11,7 +11,7 @@ class InvoiceGenerator
     /*
     Generates mock data for testing various parts of the API parsing component
     */
-    private $services = [
+    public $services = [
         'Pick Me Up Facial' => 60,
         'Teenage Peel + LED' => 79,
         'Dermaplaning' => 89,
@@ -38,7 +38,7 @@ class InvoiceGenerator
         'Aromatherapy' => 50
     ];
 
-    private $locations = [
+    public $locations = [
         'Home',
         'Client\'s Home',
         'Skin Management Club',
@@ -47,14 +47,14 @@ class InvoiceGenerator
         'Skin Management Club, Eaton\'s Hill'
     ];
 
-    function getInvoice() {
+    function getInvoice($time = null) {
         /*
         Generate a randomly filled InvoiceInterface
         */
         $team_user = TeamUser::inRandomOrder()->first();
         $name = array_rand($this->services);
         $cost = $this->services[$name];
-        return new Invoice($team_user,$name,$cost);
+        return new Invoice($team_user,$name,$cost,$time);
     }
 
     function getXeroLineItem($service_name = null, $service_cost = null, $staff = null) {
@@ -74,7 +74,7 @@ class InvoiceGenerator
         return $item;
     }
 
-    function getDescription($service_name = null, $staff_member = null) {
+    function getDescription($service_name = null, $staff_member = null, $time = null) {
         /*
         Generates a random desciption with the following syntax:
         {service_name} with {staff_name} at {store_location} on {local_d_a_t}
@@ -85,15 +85,18 @@ class InvoiceGenerator
         if (is_null($staff_member)) {
             $staff_member = User::find(rand(1, count(User::all()) - 1));
         }
+        if (is_null($time)) {
+            $time = now('Australia/Brisbane');
+        }
         $name = $staff_member->first_name . ' ' . $staff_member->last_name;
         $location = $this->locations[rand(0,count($this->locations)-1)];
-        return $service_name.' with '.$name.' at '.$location.' on '.now('Australia/Brisbane')->toCookieString();
+        return $service_name.' with '.$name.' at '.$location.' on '.$time->toAtomString();
     }
 
     function getPair() {
         $invoice = $this->getInvoice();
         $user = User::find($invoice->team_user->user_id);
-        $item = $this->getXeroLineItem($invoice->service_name,$invoice->service_cost,$user);
+        $item = $this->getXeroLineItem($invoice->service_name,$invoice->service_cost,$user,$invoice->date);
         return [$item, $invoice];
     }
 }

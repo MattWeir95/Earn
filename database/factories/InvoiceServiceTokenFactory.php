@@ -25,7 +25,7 @@ class InvoiceServiceTokenFactory extends Factory
     {
         $x = InvoiceService::factory()->create();
         return [
-            'team_id' => Team::factory(),
+            'team_id' => Team::inRandomOrder()->first(),
             'app_id' => $x->id,
             'api_id' => '1234',
             'app_name' => $x->app_name,
