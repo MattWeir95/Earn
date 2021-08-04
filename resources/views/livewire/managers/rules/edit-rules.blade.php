@@ -2,7 +2,7 @@
     class="flex flex-col items-center border border-2 border-white rounded-lg p-2 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
 
-    <form action={{ route('UpdateRule') }} method="POST" class="">
+    <form action={{ route('editForm') }} method="POST" class="">
         @csrf
 
         {{-- Rule Name --}}
@@ -50,11 +50,16 @@
 
         {{-- Buttons --}}
         <div class="flex flex-1 justify-around mt-4 mb-2">
-            <button type="submit"
+
+            <button type="submit" value="Update" name="submitButton"
                 class="text-white border border-white rounded-lg px-1 transform hover:bg-indigo-500 hover:text-white ">Update</button>
-            <button type="button"
+
+            <button type="submit" value="Remove" name="submitButton"
                 class="text-white border border-white rounded-lg px-1 transform hover:bg-indigo-500 hover:text-white ">Remove</button>
 
         </div>
+
+
     </form>
+
 </div>

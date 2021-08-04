@@ -25,28 +25,48 @@ class RuleController extends Controller
         return redirect('rules');
     }
 
-    function updateRule(Request $req){
-        $rule = Rule::find($req->id);
 
-        if($rule){
 
-            // Active was coming in as "on" or Null so converting it into a bool
-            $active = false;
-            if($req->active == "on"){
-                $active = true;
-            }
+    function editForm(Request $req){
 
-            $rule->rule_name= $req->rule_name;
-            $rule->start_date= $req->start_date; 
-            $rule->end_date= $req->end_date; 
-            $rule->percentage= $req->percentage;
-            $rule->active= $active;
+        // Update or Delete depending on what button was pressed in the form
+        switch($req->submitButton){
 
-            $rule->save();
-            }
+            case "Update":
 
+            $rule = Rule::find($req->id);
+            if($rule){
+
+                // Active was coming in as "on" or Null so converting it into a bool
+                $active = false;
+                if($req->active == "on"){
+                    $active = true;
+                }
+    
+                $rule->rule_name= $req->rule_name;
+                $rule->start_date= $req->start_date; 
+                $rule->end_date= $req->end_date; 
+                $rule->percentage= $req->percentage;
+                $rule->active= $active;
+    
+                $rule->save();
+                }   
             return redirect('rules');
-
+            break;
             
+            case "Remove": 
+                $rule = Rule::find($req->id);     
+                if($rule){     
+                    $rule->delete();
+                }
+        
+            return redirect('rules');
+            break;
+        }
+        
+        
+
     }
+
+    
 }
