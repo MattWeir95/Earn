@@ -27,13 +27,13 @@ class TeamUserFactory extends Factory
         return [
             'team_id' => 0,
             'user_id' => 0,
-            'role' => 'editor'
+            'role' => 'manager'
         ];
     }
 
     public function asManager() {
         return $this->state([
-            'role' => 'administrator'
+            'role' => 'manager'
         ]);
     }
 

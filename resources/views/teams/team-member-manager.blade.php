@@ -192,9 +192,9 @@
                             </div>
 
                             <!-- Role Description -->
-                            <div class="mt-2 text-xs text-gray-600">
-                                {{ $role->description }}
-                            </div>
+                                <div class="mt-2 text-xs text-gray-600">
+                                    {{ $role->description }}
+                                </div>
                         </div>
                     </button>
                 @endforeach
