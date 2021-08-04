@@ -58,4 +58,8 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/rules', function () {
 //Post for adding a new rule
 Route::post('addNewRule',[RuleController:: class, 'insertRule'] )->name('newRule');
 
+//Post for editing/deleteing a rule
+Route::post('editRule',[RuleController:: class, 'editForm'] )->name('editForm');
+
+
 

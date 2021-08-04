@@ -1,34 +1,31 @@
+
 {{-- Have this as absolute right now just for testing --}}
 {{-- absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full  --}}
 <div x-data class="">
     <div
-        class="flex flex-col items-center border border-2 border-white rounded-lg bg-gradient-to-b pb-3 pt-2 from-indigo-300 to-indigo-400 max-h-60">
+        class="flex flex-col items-center border border-2 border-white p-3 rounded-lg bg-gradient-to-b from-indigo-300 to-indigo-400 max-h-60 md:max-h-full">
 
         @if(!$rules->isEmpty())
-        {{-- Rule List Headings --}}
-        <div class="mb-2 ml-4 w-11/12">
-            <table class="w-11/12 ">
-                <tr class="text-white ">
-                    <td class="">Name</td>
-                    <td class="text-center">Active</td>
-                    <td class="text-right">%</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+        
 
         {{-- Rule list --}}
-        <div class="ml-4 w-11/12 overflow-scroll max-h-60">
+        <div x-data class="w-11/12 overflow-scroll max-h-60 md:max-h-full">
+
             <table class="w-11/12">
+                {{-- Rule List Headings --}}
+                <tr class="text-white font-bold ">
+                    <td class="">Name</td>
+                    <td class="text-center pr-5">Active</td>
+                    <td class="text-right">%</td>
+                </tr>
+                {{-- Rules --}}
                 @foreach ($rules as $rule )
-                <tr  class="border-b border-white text-white ">
-                    <td  class="pr-2"><button>{{ $rule->rule_name }}</button></td>
-                    <td class="pr-4  ">{{ $rule->active ? 'Yes' : 'No' }}</td>
+                <tr  class="border-b border-white text-white">
+                    <td class=""><button @click="$dispatch('custom-sendrule', {message: {{ $rule }}})" class="">{{ $rule->rule_name }}</button></td>
+                    <td class="text-center pr-5">{{ $rule->active ? 'Yes' : 'No' }}</td>
                     <td class="text-right">{{ $rule->percentage }}</td>
                 </tr>
                 @endforeach
-              
-                
                 </tbody>
             </table>
         </div>
@@ -43,5 +40,6 @@
     </div>
 </div>
 
-{{-- Alpine JS Script --}}
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+
+
+
