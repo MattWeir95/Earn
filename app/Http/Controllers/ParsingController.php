@@ -4,17 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Classes\Invoice;
 use App\Models\TeamUser;
+use App\Models\Team;
 use App\Models\User;
 use App\Models\History;
 use App\Models\Sales;
+use App\Models\InvoiceServiceToken;
 use XeroPHP\Models\Accounting\LineItem;
 use App\Classes\InvoiceGenerator;
+use App\Classes\MockFetcher;
 use Carbon\Carbon;
 
 class ParsingController extends Controller
 {
-    protected $gen = new InvoiceGenerator;
-
     public static function parseLineItem(LineItem $item, $api_team_origin = 1)
     {
         /*
@@ -31,8 +32,8 @@ class ParsingController extends Controller
             return response('Bad Request: No unit amount found', 400);
         }
 
-        $pattern = "/(.+) with (.+) at (.+) on (.+)/"; 
-        $result = preg_match_all($pattern, $desc,$matches);
+        $pattern = "/(.+) with (.+) at (.+) on (.+)$/"; 
+        $result = preg_match_all($pattern,$desc,$matches);
         if ($result == 0) {
             return response('Invalid Format: Line item did not match the required format',400);
         }
@@ -48,31 +49,52 @@ class ParsingController extends Controller
         /*
         Saves an invoice object into the history and sales table.
         */
+        Sales::create([
+            'team_user_id' => $invoice->team_user->id,
+            'service_name' => $invoice->service_name,
+            'service_cost' => $invoice->service_cost,
+            'commission_paid' => $invoice->service_cost * 0.1,
+            'date' => $invoice->date
+        ]);
         $p_his = History::all()->where('team_user_id','=',$invoice->team_user->id)
             ->firstWhere('end_time','>',now());
         if (is_null($p_his)) {
             $p_his = History::factory()->create([
                 'team_user_id' => $invoice->team_user->id,
-                'start_time' => $invoice->date->startOfMonth(),
-                'end_time' => $invoice->date->endOfMonth(),
+                'start_time' => $invoice->date->copy()->startOfMonth(),
+                'end_time' => $invoice->date->copy()->endOfMonth(),
                 'total_commission' => $invoice->service_cost*0.1
             ]);
         } else {
             $p_his->total_commission += $invoice->service_cost*0.1;
             $p_his->save();
         }
-        Sales::create([
-            'team_user_id' => $invoice->team_user->id,
-            'service_name' => $invoice->service_name,
-            'service_cost' => $invoice->service_cost,
-            'commission_earned' => $invoice->service_cost*0.1
-        ]);
     }
 
-    public static function fetchInvoices() {
+    public static function updateInvoices() {
         /*
         Check for any new invoices from API
         */
-        
+        $fetchers = [
+            'Xero' => new MockFetcher,
+            'some_other_endpoint' => 'some_other_fetcher'
+        ];
+        $gen = new InvoiceGenerator;
+        foreach (Team::all() as $team) {
+            $token = InvoiceServiceToken::all()->firstWhere('team_id','=',$team->id);
+            if (is_null($token)) {
+                $token = InvoiceServiceToken::factory()->create(['team_id'=>$team->id]);
+                // continue;
+            }
+            // This should return the most recent invoice from xero,
+            // also should be calling some annonymous API controller,
+            // not xero explicitly
+            // $item = ParsingController::parseLineItem(XeroController::fetchInvoice($token));
+            // $item = ParsingController::parseLineItem($gen->getXeroLineItem(),$team->id);  
+            $items = $fetchers[$token->app_name]->fetchInvoices();
+            foreach ($items as $item) {
+                ParsingController::saveInvoice($item);
+            }
+        }
     }
 }
