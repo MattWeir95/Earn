@@ -13,7 +13,8 @@ use Carbon\Carbon;
 
 class ParsingController extends Controller
 {
-    protected $gen = new InvoiceGenerator;
+    //What is this?
+    //protected $gen = new InvoiceGenerator;
 
     public static function parseLineItem(LineItem $item, $api_team_origin = 1)
     {
