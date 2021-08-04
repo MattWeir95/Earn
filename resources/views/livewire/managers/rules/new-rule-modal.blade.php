@@ -1,8 +1,15 @@
 <head>
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
+<style>
 
-<div x-data="{isOpen: false}" x-show="isOpen" @keydown.escape.window="isOpen = false"
+    [x-cloak] {
+      display: none;
+    }
+  
+  </style>
+
+<div x-data="{isOpen: false}" x-cloak x-show="isOpen"  @keydown.escape.window="isOpen = false"
     @custom-new-rule-modal.window="isOpen = true"
     class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8/12" >
 
@@ -16,7 +23,7 @@
         <form action={{ route('newRule') }} method="POST">
             @csrf
             <div class="mx-4 mt-4">
-                <label for="rule_name">Rule Name</label>
+                <label for="rule_name">Name</label>
                 <input id="rule_name" name="rule_name" type="text" class="mt-1 w-full rounded" />
             </div>
 
@@ -43,5 +50,3 @@
         </form>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>

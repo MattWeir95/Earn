@@ -6,10 +6,10 @@ use Livewire\Component;
 use App\Models\Rule;
 
 
-class ViewRulesList extends Component
+class EditRules extends Component
 {
 
-   /**
+    /**
      * The team instance.
      *
      * @var mixed
@@ -31,8 +31,7 @@ class ViewRulesList extends Component
     {
         $rules = Rule::where('team_id', $this->team->id)->get();
 
-
-        return view('livewire.managers.rules.view-rules-list', [
+        return view('livewire.managers.rules.edit-rules', [
             'rules' => $rules
         ]);
     }

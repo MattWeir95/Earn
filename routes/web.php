@@ -6,8 +6,7 @@ use App\Http\Controllers\XeroController;
 use App\Http\Controllers\ParsingController;
 use App\Classes\InvoiceGenerator;
 use App\Models\User;
-use App\Http\Controllers\NewRuleController;
-use App\Http\Controllers\ViewRuleController;
+use App\Http\Controllers\RuleController;
 
 
 /*
@@ -55,12 +54,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/rules', function () {
     return view('rules');
 })->name('rules');
 
-//Rule screen route to test components
-Route::get('ruleScreen', function() {
-    return view('livewire/managers/rules/ruleScreen');
-});
 
 //Post for adding a new rule
-Route::post('addNewRule',[NewRuleController:: class, 'insertRule'] )->name('newRule');
+Route::post('addNewRule',[RuleController:: class, 'insertRule'] )->name('newRule');
+
+//Post for editing/deleteing a rule
+Route::post('editRule',[RuleController:: class, 'editForm'] )->name('editForm');
+
 
 
