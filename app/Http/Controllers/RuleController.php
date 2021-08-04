@@ -29,6 +29,16 @@ class RuleController extends Controller
 
     function editForm(Request $req){
 
+        
+
+        request()->validate([
+            'rule_name' => ['required', 'max:15'],
+            'start_date' => ['required','date','after_or_equal:today'],
+            'end_date' => ['required','date', 'after:start_date'],
+            'percentage' => ['required','numeric','gt:0', 'lte:999'],
+
+        ]);
+
         // Update or Delete depending on what button was pressed in the form
         switch($req->submitButton){
 
