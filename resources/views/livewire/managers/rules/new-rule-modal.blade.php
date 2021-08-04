@@ -24,20 +24,20 @@
             @csrf
             <div class="mx-4 mt-4">
                 <label for="rule_name">Name</label>
-                <input id="rule_name" name="rule_name" type="text" class="mt-1 w-full rounded" />
+                <input id="rule_name" name="new_rule_name" type="text" class="mt-1 w-full rounded @error('new_rule_name') border-red-400 border-1 @enderror" />
             </div>
 
             <div class="mx-4 mt-4">
                 <label for="start_date">Start Date</label>
-                <input id="start_date" name="start_date" type="date" class="mt-1 w-full rounded" />
+                <input id="start_date" name="new_start_date" type="date" class="mt-1 w-full rounded @error('new_start_date') border-red-400 border-1 @enderror" />
             </div>
             <div class="mx-4 mt-4">
                 <label for="end_date">End Date</label>
-                <input id="end_date" name="end_date" type="date" class="mt-1 w-full rounded" />
+                <input id="end_date" name="new_end_date" type="date" class="mt-1 w-full rounded @error('new_end_date') border-red-400 border-1 @enderror" />
             </div>
             <div class="mx-4 mt-4">
                 <label for="commision_amount">Commission (%)</label>
-                <input id="commision_amount" name="percentage" type="number" class="mt-1 w-full rounded" />
+                <input id="commision_amount" name="new_percentage" type="number" class="mt-1 w-full rounded @error('new_percentage') border-red-400 border-1 @enderror" />
             </div>
 
             <div  class="flex justify-center mt-4 mb-2">
