@@ -3,18 +3,10 @@
 $user = Auth::user()
 @endphp
     @if (Gate::check('isManager', $user->currentTeam))
-
-    <div class="flex flex-col mt-10 justify-center items-center md:flex-row">
-        <div  class="w-11/12 mb-4 md:mb-0 md:mx-4">
+    <widget-container class="grid grid-cols-1 lg:grid-cols-2 gap-12 p-12">
             @livewire('managers.rules.view-rules-list' ,['team' => $user->currentTeam])
-
-        </div>
-        <div class="w-11/12 md:mx-4">
             @livewire('managers.rules.edit-rules', ['team' => $user->currentTeam])
-        </div>
-
-    </div>
-
+    </widget-container>
 
     <div class="">
     @livewire('managers.rules.new-rule-modal', ['team' => $user->currentTeam])
