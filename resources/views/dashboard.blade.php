@@ -1,14 +1,12 @@
 <x-app-layout>
-        <div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             @if (Gate::check('isManager', Auth::user()->currentTeam))
                 <div>
-                    {{-- ADD LIVEWIRE COMPONENTS HERE --}}
                     <h1>Manager Homepage</h1>
                 </div>
             @else
                 <div>
-                    {{-- ADD LIVEWIRE COMPONENTS HERE --}}
-                    <h1>Employee Homepage</h1>
+                    @livewire('employees.home')
                 </div>
             @endif
         </div>

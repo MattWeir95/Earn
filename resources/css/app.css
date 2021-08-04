@@ -1,3 +1,54 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+[x-cloak] {
+    opacity: 0 !important;
+}
+
+@property --percentage {
+    syntax: "<integer>";
+    initial-value: 0;
+    inherits: false;
+}
+
+.gauge-meter {
+    @apply block absolute transform transition ease-in-out duration-1000 
+        rotate-45 rounded-full;
+    border-right-color: currentColor;
+    border-bottom-color: currentColor;
+}
+
+.gauge-percentage {
+    transition: --percentage 1s;
+    counter-set: percentage var(--percentage);
+}
+
+.gauge-percentage::after {
+    content: counter(percentage) "%";
+}
+
+.gauge-percentage.populated {
+    transition-delay: 500ms;
+}
+
+
+.duration-300 {
+    transition-duration: 300ms;
+}
+
+.ease-in {
+    transition-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+.ease-out {
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+}
+
+.scale-90 {
+    transform: scale(.9);
+}
+
+.scale-100 {
+    transform: scale(1);
+}
