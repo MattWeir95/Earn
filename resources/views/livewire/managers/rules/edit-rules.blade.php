@@ -10,11 +10,7 @@
             <input x-data="{message: ''}" @custom-sendrule.window="
             message=$event.detail.message;" x-model="message.rule_name" id="rule_name" name="rule_name" type="text" value=""
                 class=" mt-1 w-full rounded-lg border-gray-400 @error('rule_name') border-red-400 border-1 @enderror" />
-             {{-- @error('rule_name')
-            @if($message == "The rule name must not be greater than 10 characters.")
-            <p class="text-xs text-red-600 px-1 m-0 py-0">Max 15 characters</p>
-            @endif
-             @enderror   --}}
+            
         </div>
 
         {{-- Start Date --}}
