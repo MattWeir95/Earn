@@ -4,9 +4,18 @@
     <div
         class="flex flex-col items-center border border-2 border-white p-3 rounded-lg bg-gradient-to-b from-indigo-300 to-indigo-400 ">
 
+        @if($rules->isEmpty())
+            <table class="w-full">
+                {{-- Rule List Headings --}}
+                <tr class="text-white font-bold ">
+                    <td class="">Name</td>
+                    <td class="text-right">Active</td>
+                    <td class="text-right">%</td>
+                </tr>
+            </table>
+        
+        @endif
         @if(!$rules->isEmpty())
-
-
         {{-- Rule list --}}
         <div x-data class="w-full  overflow-y-auto max-h-60 pr-3">
 
@@ -14,7 +23,7 @@
                 {{-- Rule List Headings --}}
                 <tr class="text-white font-bold ">
                     <td class="">Name</td>
-                    <td class=" pr-5">Active</td>
+                    <td class="text-right">Active</td>
                     <td class="text-right">%</td>
                 </tr>
                 {{-- Rules --}}
@@ -24,7 +33,7 @@
                 <tr class="border-b border-white text-white">
                     <td class=""><button @click="$dispatch('custom-sendrule', {message: {{ $rule }}})"
                             class="">{{ $rule->rule_name }}</button></td>
-                    <td class="">
+                    <td class="flex justify-end mr-3 mt-1">
 
                         {{-- Return a active or inactive SVG --}}
                         @if($rule->active)

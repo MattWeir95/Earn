@@ -8,9 +8,11 @@
         <div class="mx-4 mt-2">
             <label class="text-white" for="rule_name">Name</label>
             <input x-data="{message: ''}" @custom-sendrule.window="
-            message=$event.detail.message;" x-model="message.rule_name" id="rule_name" name="rule_name" type="text" value=""
-                class=" mt-1 w-full rounded-lg border-gray-400 @error('rule_name') border-red-400 border-1 @enderror" />
-            
+            message=$event.detail.message;" x-model="message.rule_name" id="rule_name" name="rule_name" type="text"
+                value=""
+                class=" mt-1 w-full rounded-lg border-gray-400 @error('rule_name') border-red-400 border-1 @enderror">
+
+
         </div>
 
         {{-- Start Date --}}
@@ -34,16 +36,17 @@
             <label class="text-white" for="commision_amount">Commission (%)</label>
             <input x-data="{message: ''}" @custom-sendrule.window="
             message=$event.detail.message;" x-model="message.percentage" id="commision_amount" name="percentage"
-                type="number" class="mt-1 w-full rounded-lg border-gray-400 @error('percentage') border-red-400 border-1 @enderror" />
+                type="number"
+                class="mt-1 w-full rounded-lg border-gray-400 @error('percentage') border-red-400 border-1 @enderror" />
         </div>
-        
+
 
         {{-- Active? --}}
         <div class="flex justify-center items-center mt-2 text-white">
             <label for="active" class="mr-2">Active</label>
             <input x-data="{message: ''}" @custom-sendrule.window="
-        message=$event.detail.message;" x-model="message.active" id="active" name="active" type="checkbox" class="rounded  focus:ring-0">
-    
+        message=$event.detail.message;" x-model="message.active" id="active" name="active" type="checkbox"
+                class="rounded  focus:ring-0">
         </div>
         {{-- This is so i can pass the ID to the edit rule component --}}
         <input x-data="{message: ''}" @custom-sendrule.window="
@@ -63,4 +66,8 @@
 
     </form>
 
+    {{-- Error modal --}}
+    @if($errors->any())
+    @livewire('managers.rules.form-error-modal');
+    @endif
 </div>
