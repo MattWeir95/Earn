@@ -13,6 +13,7 @@ use XeroPHP\Models\Accounting\LineItem;
 use App\Classes\InvoiceGenerator;
 use App\Classes\MockFetcher;
 use Carbon\Carbon;
+use App\Http\Controllers\RuleController;
 
 class ParsingController extends Controller
 {
@@ -49,11 +50,12 @@ class ParsingController extends Controller
         /*
         Saves an invoice object into the history and sales table.
         */
+        $commission_paid = RuleController::getCommission($invoice);
         Sales::create([
             'team_user_id' => $invoice->team_user->id,
             'service_name' => $invoice->service_name,
             'service_cost' => $invoice->service_cost,
-            'commission_paid' => $invoice->service_cost * 0.1,
+            'commission_paid' => $commission_paid,
             'date' => $invoice->date
         ]);
         $p_his = History::all()->where('team_user_id','=',$invoice->team_user->id)
@@ -63,10 +65,10 @@ class ParsingController extends Controller
                 'team_user_id' => $invoice->team_user->id,
                 'start_time' => $invoice->date->copy()->startOfMonth(),
                 'end_time' => $invoice->date->copy()->endOfMonth(),
-                'total_commission' => $invoice->service_cost*0.1
+                'total_commission' => $commission_paid
             ]);
         } else {
-            $p_his->total_commission += $invoice->service_cost*0.1;
+            $p_his->total_commission += $commission_paid;
             $p_his->save();
         }
     }

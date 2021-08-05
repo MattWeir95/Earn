@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Rule;
-
+use App\Classes\Invoice;
 
 class RuleController extends Controller
 {
@@ -83,6 +83,17 @@ class RuleController extends Controller
         
         
 
+    }
+
+    public static function getCommission(Invoice $invoice) {
+        $rule = Rule::where('team_id','=',$invoice->team_user->id)
+                    ->where('active','=',true)
+                    ->where('start_date','<',$invoice->date)
+                    ->where('end_date','>',$invoice->date)
+                    ->orderBy('percentage', 'DESC')
+                    ->first();
+        if (is_null($rule)) { return 0; }
+        return $invoice->service_cost*($rule->percentage/100);
     }
 
     
