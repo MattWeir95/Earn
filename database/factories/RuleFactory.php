@@ -24,8 +24,8 @@ class RuleFactory extends Factory
         return [
             'team_id' =>1,
             'rule_name' => $this->faker->unique()->firstName(),
-            'start_date' => $this->faker->date(),
-            'end_date' => $this->faker->date(),
+            'start_date' => date('Y-m-d'),
+            'end_date' => date('Y-m-d'),
             'active' => $this->faker->boolean(),
             'percentage' =>$this->faker->numberBetween($min=1, $max=100)    
         ];

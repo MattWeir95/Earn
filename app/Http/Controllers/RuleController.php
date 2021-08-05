@@ -19,7 +19,7 @@ class RuleController extends Controller
 
         $rule = new Rule;
         //Setting fields to go into the rule table
-        $rule->team_id = auth()->user()->currentTeam->id;
+        $rule->team_id = auth()->user()->currentTeam->id;  
         $rule->rule_name=$req->new_rule_name;
         //Rule is default active until changed by manager
         $rule->active=true;
@@ -80,7 +80,6 @@ class RuleController extends Controller
             return redirect('rules');
             break;
         }
-        
         
 
     }

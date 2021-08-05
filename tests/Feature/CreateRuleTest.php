@@ -14,11 +14,13 @@ use App\Http\Livewire\Managers\Rules\ViewRulesList;
 
 
 
-class RuleTest extends TestCase
+class CreateRuleTest extends TestCase
 {
     use RefreshDataBase;
+
+    
     /**
-     * Test Post route redirects
+     * Test Post route for creating a rule redirects
      * Test Rule is created in the DB
      * Test Rule is shown on the view.
      *
@@ -37,6 +39,8 @@ class RuleTest extends TestCase
             'new_percentage' =>82,
             'team_id' =>1    
         ];
+  
+        $this->post('addNewRule', $attributes)->assertRedirect('rules');
 
         $dbAttributes = [
             'rule_name' => "Test Rule",
@@ -45,11 +49,6 @@ class RuleTest extends TestCase
             'percentage' =>82    ,
             'team_id' =>1    
         ];
- 
-        
-        $this->post('addNewRule', $attributes)->assertRedirect('rules');
-
-
         $this->assertDatabaseHas('rules', $dbAttributes);
 
         Livewire::test(ViewRulesList::class, ['team' => $user->currentTeam])
@@ -58,6 +57,8 @@ class RuleTest extends TestCase
       
     }
 
+
+    
 
     /**
      * Test Rule rule_name validation
