@@ -18,7 +18,6 @@ class DeleteRuleTest extends TestCase
 
     public function test_delete_rule(){
 
-        $this->withoutExceptionHandling();
         Team::factory()->create();
         $this->actingAs($user = User::factory()->create());
         
@@ -70,6 +69,11 @@ class DeleteRuleTest extends TestCase
             'percentage' =>82,
         ];
         $this->assertDatabaseMissing('rules', $doesntExistAttributes);
+
+        //Check the rule is not in the view
+        Livewire::test(ViewRulesList::class, ['team' => $user->currentTeam])
+                    ->call('render')
+                    ->assertDontSee($doesntExistAttributes['percentage'], $doesntExistAttributes['rule_name']);
         
       
     }
