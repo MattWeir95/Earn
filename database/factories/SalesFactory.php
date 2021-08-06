@@ -8,6 +8,7 @@ use App\Models\TeamUser;
 use App\Classes\InvoiceGenerator;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Http\Controllers\RuleController;
 
 class SalesFactory extends Factory
 {
@@ -26,7 +27,14 @@ class SalesFactory extends Factory
     public function definition()
     {
         $gen = new InvoiceGenerator;
-        return $gen->getInvoice()->asSale();
+        $invoice = $gen->getInvoice();
+        return [
+            'team_user_id' => $invoice->team_user->id,
+            'service_name' => $invoice->service_name,
+            'service_cost' => $invoice->service_cost,
+            'commission_paid' => RuleController::getCommission($invoice),
+            'date' => $invoice->date
+        ];
     }
 
     public function configure()

@@ -41,8 +41,8 @@ class ParsingController extends Controller
         $names = explode(" ",$matches[2][0]);
         $f_name = $names[0];
         $l_name = $names[1];
-        $c_user_id = User::all()->where('first_name','=',$f_name)->firstWhere('last_name','=',$l_name)->id;
-        $team_user = TeamUser::all()->where('user_id','=',$c_user_id)->firstWhere('team_id','=',$api_team_origin);
+        $c_user_id = User::where('first_name','=',$f_name)->firstWhere('last_name','=',$l_name)->id;
+        $team_user = TeamUser::where('user_id','=',$c_user_id)->firstWhere('team_id','=',$api_team_origin);
         return new Invoice($team_user,$matches[1][0],$amount,new Carbon($matches[4][0]));
     }
 

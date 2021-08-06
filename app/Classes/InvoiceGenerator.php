@@ -47,16 +47,25 @@ class InvoiceGenerator
         'Skin Management Club, Eaton\'s Hill'
     ];
 
+    /**
+     * Generates a random Invoice
+     * @param Carbon $time
+     * @return Invoice $invoice
+     */
     function getInvoice($time = null) {
-        /*
-        Generate a randomly filled InvoiceInterface
-        */
         $team_user = TeamUser::inRandomOrder()->first();
         $name = array_rand($this->services);
         $cost = $this->services[$name];
         return new Invoice($team_user,$name,$cost,$time);
     }
 
+    /**
+     * Generates a XeroPHP LineItem object
+     * @param $service_name
+     * @param $service_cost
+     * @param User $staff
+     * @return LineItem @item
+     */
     function getXeroLineItem($service_name = null, $service_cost = null, $staff = null) {
         if (is_null($service_name)) {
             $service_name = array_rand($this->services);
@@ -74,6 +83,15 @@ class InvoiceGenerator
         return $item;
     }
 
+    /**
+     * Generates a description following the syntax from our standardised
+     * LineItem descriptions
+     * @param $service_name
+     * @param $service_cost
+     * @param User $staff
+     * @param Carbon $time
+     * @return String $description
+     */
     function getDescription($service_name = null, $staff_member = null, $time = null) {
         /*
         Generates a random desciption with the following syntax:
@@ -93,6 +111,10 @@ class InvoiceGenerator
         return $service_name.' with '.$name.' at '.$location.' on '.$time->toAtomString();
     }
 
+    /**
+     * Generates a pair of matching LineItem and Invoice
+     * @return [LineItem $item, Invoice $invoice]
+     */
     function getPair() {
         $invoice = $this->getInvoice();
         $user = User::find($invoice->team_user->user_id);
