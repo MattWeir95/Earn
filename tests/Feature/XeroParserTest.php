@@ -19,14 +19,14 @@ class XeroParserTest extends TestCase
      */
     public function test_xero_parser()
     {
-        User::factory()->withPersonalTeam()->create();
+        $user = User::factory()->withPersonalTeam()->create();
         for ($j = 0; $j < 10; $j++) {
             User::factory()->create();
         }
         $gen = new InvoiceGenerator;
         for ($i = 0; $i < 100; $i++) {
             [$item, $invoice] = $gen->getPair();
-            $result = ParsingController::parseLineItem($item);
+            $result = ParsingController::parseLineItem($item,$user->current_team_id);
             $this->assertEquals($invoice->service_name,$result->service_name,'Service Name');
             $this->assertEquals($invoice->service_cost,$result->service_cost,'Service Cost');
             $this->assertEquals($invoice->team_user,$result->team_user,'Team User');

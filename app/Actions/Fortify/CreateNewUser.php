@@ -32,15 +32,13 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return DB::transaction(function () use ($input) {
-            return tap(User::create([
+            return User::factory()->withPersonalTeam()->create([
                 'first_name' => $input['first_name'],
                 'last_name' => $input['last_name'],
                 'email' => $input['email'],
                 'timezone' => $input['timezone'],
                 'password' => Hash::make($input['password']),
-            ]), function (User $user) {
-                $this->createTeam($user);
-            });
+            ]);
         });
     }
 
@@ -52,10 +50,12 @@ class CreateNewUser implements CreatesNewUsers
      */
     protected function createTeam(User $user)
     {
-        $user->ownedTeams()->save(Team::forceCreate([
+        $team = Team::forceCreate([
             'user_id' => $user->id,
             'name' => explode(' ', $user->first_name . " " . $user->last_name, 2)[0]."'s Team",
             'personal_team' => true,
-        ]));
+        ]);
+        $user = $user->ownedTeams()->save($team);
+        $user->save(['current_team_id' => $team->id]);
     }
 }

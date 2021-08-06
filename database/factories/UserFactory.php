@@ -35,7 +35,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'current_team_id' => 1
+            'current_team_id' => null
         ];
     }
 
@@ -57,11 +57,22 @@ class UserFactory extends Factory
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
+            if ($user->current_team_id == null) {
+                $team = Team::orderBy('id','desc')->first();
+                if (is_null($team)) {
+                    $team_id = 0;
+                } else {
+                    $team_id = $team->id;
+                }
+            } else {
+                $team_id = $user->current_team_id;
+            }
             TeamUser::factory()->create([
-                'team_id' => $user->current_team_id,
+                'team_id' => $team_id,
                 'user_id' => $user->id
             ]);
-            return $this->state([]);
+            $user->current_team_id = $team_id;
+            $user->save();
         });
     }
     
@@ -82,11 +93,7 @@ class UserFactory extends Factory
                 return ['name' => $user->first_name . '\'s Team', 'user_id' => $user->id, 'personal_team' => true];
         });
 
-        return $this->state(function (array $attributes) {
-            return [
-                'current_team_id' => Team::all()->max('id')+1,
-            ];
-        })->has(
+        return $this->has(
             $new_team_f,
             'ownedTeams'
         );
