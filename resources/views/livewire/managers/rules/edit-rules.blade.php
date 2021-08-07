@@ -1,5 +1,5 @@
 <div x-data
-    class="flex flex-col items-center border border-2 border-white rounded-lg p-2 bg-gradient-to-b from-indigo-300 to-indigo-400">
+    class="gap-1 p-8 items-center border border-2 border-white rounded-lg p-2 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
     <form action={{ route('editForm') }} method="POST" class="">
         @csrf
@@ -68,6 +68,6 @@
 
     {{-- Error modal --}}
     @if($errors->any())
-    @livewire('managers.rules.form-error-modal');
+    @livewire('managers.rules.form-error-modal')
     @endif
 </div>
