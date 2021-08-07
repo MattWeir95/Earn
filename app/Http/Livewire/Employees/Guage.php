@@ -35,8 +35,8 @@ class Guage extends Component
 
         //Current Sales
         $team_user = TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first();
-        $currentSales = History::where('team_user_id', $team_user->id)->where('end_time', now('AEST')->endOfMonth())->first();
-        $previousSales = History::where('team_user_id', $team_user->id)->where('end_time', now('AEST')->endofMonth()->subMonth())->first();
+        $currentSales = History::where('team_user_id', $team_user->id)->firstWhere('end_time', now('AEST')->endOfMonth());
+        $previousSales = History::where('team_user_id', $team_user->id)->firstWhere('end_time', now('AEST')->setDay(5)->subMonth()->endOfMonth());
 
         if($previousSales != null){
             $previousSales = $previousSales->total_commission;
