@@ -68,6 +68,6 @@
 
     {{-- Error modal --}}
     @if($errors->any())
-    @livewire('managers.rules.form-error-modal');
+    @livewire('managers.rules.form-error-modal')
     @endif
 </div>
