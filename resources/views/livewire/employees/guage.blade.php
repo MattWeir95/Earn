@@ -1,13 +1,13 @@
 <div>
     <div
         class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-indigo-300 to-indigo-400 rounded-xl shadow-xl p-8 text-white ">
-        <div class="flex flex-col items-center justify-center m-2" x-data="{ earned: 120, target: 250 }"
+        <div class="flex flex-col items-center justify-center m-2" x-data="{ earned: {{ $currentSales }}, target: {{ $previousSales }} }"
             @commission-new-sale.window="earned = earned + $event.detail;"
             @commission-earned-updated.window="earned = $event.detail;"
             @commission-target-updated.window="target = $event.detail;">
             <gauge class="pt-2 relative overflow-hidden w-48 sm:w-64 h-24 sm:h-32">
                 <div x-cloak
-                    class="gauge-meter border-10 sm:border-20 w-48 sm:w-64 h-48 sm:h-64 text-indigo-600 border-indigo-100"
+                    class="gauge-meter border-8 sm:border-20 w-48 sm:w-64 h-48 sm:h-64 text-indigo-600 border-indigo-100"
                     :style="`transform: rotate(${(45 + (Math.floor((earned/target)*100) * 1.8))}deg)`">
                 </div>
                 <div x-cloak
@@ -26,12 +26,12 @@
                 <div class="px-3 text-3xl sm:text-6xl font-bold" x-text="`$${parseFloat(earned).toFixed(2)}`"></div>
             </earned-commission>
 
-            <earned-commission-info class="flex w-full pt-2">
-                <div class="text-xs">Period End Date: 31/04/2021</div>
+            <earned-commission-info class="grid grid-cols-2 pt-2 w-full">
+                <div class="text-xs">Period End Date:</div>
+                <div class="text-xs justify-self-end">{{ $periodEndDate }}</div>
             </earned-commission-info>
         </div>
     </div>
-
     <script>
         window.newSale = value => {
             window.dispatchEvent(new CustomEvent('commission-new-sale', {
