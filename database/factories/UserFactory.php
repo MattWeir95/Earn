@@ -53,7 +53,7 @@ class UserFactory extends Factory
         });
     }
 
-    
+    //This function fails the team control tests--------------
     public function configure()
     {
         return $this->afterCreating(function (User $user) {
@@ -75,7 +75,7 @@ class UserFactory extends Factory
             $user->save();
         });
     }
-    
+  //-----------------------------------------------------------  
     
 
     /**
