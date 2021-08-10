@@ -40,19 +40,17 @@ class XeroController extends Controller
         InvoiceServiceToken::create($inputs); 
     }
 
-    //NEED TO MODIFY THIS FUNCTION TO SUIT IMPLEMENTATION
-    //----------------------------------------------------
     public function refreshAccessTokenIfNecessary()
     {
         // Step 5 - Before using the access token, check if it has expired and refresh it if necessary.
-        $user = auth()->user();
-        $accessToken = new AccessToken(json_decode($user->xero_access_token));
+        $token = InvoiceServiceToken::firstWhere('team_id','=',auth()->user()->currentTeam->id);
+        $accessToken = new AccessToken(json_decode($token->access_token));
 
         if ($accessToken->hasExpired()) {
             $accessToken = $this->getOAuth2()->refreshAccessToken($accessToken);
 
-            $user->xero_access_token = $accessToken;
-            $user->save();
+            $token->access_token = $accessToken;
+            $token->save();
         }
     }
 }
