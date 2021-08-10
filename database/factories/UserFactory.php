@@ -5,11 +5,10 @@ namespace Database\Factories;
 use App\Models\Team;
 use App\Models\TeamUser;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
-use NunoMaduro\Collision\Adapters\Phpunit\State;
+
 
 class UserFactory extends Factory
 {
@@ -53,31 +52,6 @@ class UserFactory extends Factory
         });
     }
 
-    //This function fails the team control tests--------------
-    public function configure()
-    {
-        return $this->afterCreating(function (User $user) {
-            if ($user->current_team_id == null) {
-                $team = Team::orderBy('id','desc')->first();
-                if (is_null($team)) {
-                    $team_id = 0;
-                } else {
-                    $team_id = $team->id;
-                }
-            } else {
-                $team_id = $user->current_team_id;
-            }
-            TeamUser::factory()->create([
-                'team_id' => $team_id,
-                'user_id' => $user->id
-            ]);
-            $user->current_team_id = $team_id;
-            $user->save();
-        });
-    }
-  //-----------------------------------------------------------  
-    
-
     /**
      * Indicate that the user should have a personal team.
      *
@@ -92,10 +66,17 @@ class UserFactory extends Factory
             ->state(function (array $attributes, User $user) {
                 return ['name' => $user->first_name . '\'s Team', 'user_id' => $user->id, 'personal_team' => true];
         });
+        $team_user_f = TeamUser::factory()->asManager()
+            ->state(function (array $attributes, User $user) {
+                return ['team_id' => $user->currentTeam->id, 'user_id' => $user->id];
+            });
 
         return $this->has(
             $new_team_f,
             'ownedTeams'
+        )->has(
+            $team_user_f,
+            'team_user_entries'
         );
     }
 }

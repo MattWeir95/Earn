@@ -27,7 +27,7 @@ class TeamUserFactory extends Factory
         return [
             'team_id' => 0,
             'user_id' => 0,
-            'role' => 'manager'
+            'role' => 'employee'
         ];
     }
 
