@@ -1,20 +1,10 @@
-<head>
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
-</head>
-<style>
-
-    [x-cloak] {
-      display: none;
-    }
-  
-  </style>
 
 <div x-data="{isOpen: false}" x-cloak x-show="isOpen"  @keydown.escape.window="isOpen = false"
     @custom-new-rule-modal.window="isOpen = true"
-    class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8/12" >
+    class="absolute inset-10 z-10 flex items-center justify-center" x-transition:enter="ease-out duration-300"
+    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
 
-    <div class="bg-white border-2 border-gray-200  rounded">
-
+    <div class="bg-white border-2 border-gray-200 rounded">
         <div @click="isOpen= false" class="flex flex-row justify-between mx-2">
             <h1 class="font-bold">New Rule</h1>
             <button>X</button>
@@ -42,9 +32,9 @@
 
             <div  class="flex justify-center mt-4 mb-2">
                 <button
-                    class="text-blue-400 border border-blue-400 rounded-lg px-2 mx-2 transform hover:bg-blue-400 hover:text-white pb-1">Save</button>
+                    class="px-4 bg-transparent p-3 rounded-lg border-2 border-indigo-500 text-indigo-500 hover:bg-gray-100 hover:text-indigo-400 mr-4 w-24">Save</button>
                 <button type="button" @click="isOpen = false"
-                    class="bg-blue-400 text-white rounded-lg px-2 mx-2 hover:bg-white hover:text-blue-400 hover:border border-blue-400 border pb-1">Cancel</button>
+                    class="px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400 w-24">Cancel</button>
 
             </div>
         </form>
