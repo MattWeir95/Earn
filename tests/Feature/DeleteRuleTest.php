@@ -20,16 +20,15 @@ class DeleteRuleTest extends TestCase
 
         Team::factory()->create();
         $this->actingAs($user = User::factory()->create());
-        
-
+        $rule = Rule::factory()->make();
 
         //Insert the rule
         $attributes = [
-            'new_rule_name' => "Test Rule",
-            'new_start_date' => "2021-08-05",
-            'new_end_date' => "2021-08-05",
-            'new_percentage' =>82,
-            'team_id' =>1    
+            'new_rule_name' => $rule->rule_name,
+            'new_start_date' => $rule->start_date,
+            'new_end_date' => $rule->end_date,
+            'new_percentage' =>$rule->percentage,
+            'team_id' =>$user->current_team_id    
         ];
   
         $this->post('addNewRule', $attributes)->assertRedirect('rules');
@@ -37,22 +36,22 @@ class DeleteRuleTest extends TestCase
 
         //Check rule exists in DB
         $dbAttributes = [
-            'rule_name' => "Test Rule",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
-            'percentage' =>82    ,
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' =>$rule->percentage    ,
+            'team_id' =>$user->current_team_id    
         ];
         $this->assertDatabaseHas('rules', $dbAttributes);
 
 
         //Remove the rule
         $removeRuleAttributes = [
-            'id' => 1,
-            'rule_name' => "Test Rule2",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
-            'percentage' =>82,
+            'id' => $rule->id,
+            'rule_name' => $rule->rule_name,
+            'start_date' =>  $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' =>$rule->percentage,
             'submitButton' => 'Remove'
         ];
 
@@ -60,20 +59,20 @@ class DeleteRuleTest extends TestCase
 
         //Check the rule is not in the DB
         $doesntExistAttributes = [
-            'id' => 1,
-            'team_id' =>1,
-            'rule_name' => "Test Rule2",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
+            'id' => $rule->id,
+            'team_id' =>$user->current_team_id,
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
             'active'=>1,
-            'percentage' =>82,
+            'percentage' =>$rule->percentage,
         ];
         $this->assertDatabaseMissing('rules', $doesntExistAttributes);
 
         //Check the rule is not in the view
         Livewire::test(ViewRulesList::class, ['team' => $user->currentTeam])
                     ->call('render')
-                    ->assertDontSee($doesntExistAttributes['percentage'], $doesntExistAttributes['rule_name']);
+                    ->assertDontSee($rule);
         
       
     }
