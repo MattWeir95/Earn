@@ -28,36 +28,66 @@ class PredictionController extends Controller
         return (($n-$start1)/($stop1-$start1))*($stop2-$start2)+$start2;
     }
 
+    /**
+     * Linearly extrapolate earnings from the current month to the
+     * end of the current month. Does not utilise any expected sales
+     * figures.
+     * @param int $team_user_id
+     */
     public static function extrapolateThisMonth(int $team_user_id) {
-        /**
-         * Linearly extrapolate earnings from the current month to the
-         * end of the current month. Does not utilise any expected sales
-         * figures.
-         * @param int $team_user_id
-         */
         $history = History::where('team_user_id','=',$team_user_id)
             ->firstWhere('start_time','=',now()->startOfMonth());
         return $history->total_commission/(now()->day/now()->daysInMonth);
     }
 
+    /**
+     * Returns the commission target for the current month
+     * by predicting the month's expected commission using
+     * historical data
+     * @param int $team_user_id
+     * @param double $beta
+     * @return double $target
+     */
+    public static function getTarget(int $team_user_id, $beta = 0.75) {
+        $ens = static::$expected_normalised_sales;
+        $histories = History::where('team_user_id','=',$team_user_id)
+            ->where('end_time','<',now())
+            ->orderBy('start_time','desc')
+            ->take(6)
+            ->toArray();
+        if (is_null($histories)) {
+            // return TeamUser::find($team_user_id)->team->min_target
+            return 0;
+        }
+        $normalised_histories = array_map(function ($history) use ($ens) {
+            return $history['total_commission'] / $ens[substr($history['start_time'], 5, 2) - 1];
+        }, $histories);
+        $total = end($normalised_histories);
+        for ($i = count($histories)-1; $i > 0; $i--) {
+            $total = ($total * $beta) + ((1 - $beta) * $normalised_histories[$i]);
+        }
+        // return max($total * $ens[now()->month-1],auth()->user()->currentTeam->min_target);
+        return $total * $ens[now()->month - 1];
+    }
+
+    /**
+     * Predict the next month's commission using a weighted average over
+     * a normalised sales value using the last min(count(History::all()),6)
+     * month's history.
+     * @param $team_user_id
+     * @param $n_months
+     * @param $beta : Momentum term for weighted averaging
+     * @return Array $results
+     */
     public static function predict(int $team_user_id, $n_months = 1, $beta = 0.75) {
-        /**
-         * Predict the next month's commission using a weighted average over
-         * a normalised sales value using the last min(count(History::all()),6)
-         * month's history.
-         * @param $team_user_id
-         * @param $n_months
-         * @param $beta : Momentum term for weighted averaging
-         */
-        $expected_normalised_sales = PredictionController::$expected_normalised_sales;
+        $ens = static::$expected_normalised_sales;
         
-        $histories = History::where('team_user_id','=',$team_user_id)->orderBy('start_time','desc')->get()->toArray();
-        $histories[0]['total_commission'] = $histories[0]['total_commission']/(now()->day/now()->daysInMonth);
-        $normalised_histories = array_map(function ($history) use ($expected_normalised_sales) {
-            $month = (int) substr($history['start_time'],5,2);
-            return $history['total_commission']/$expected_normalised_sales[$month-1];
+        $histories = History::where('team_user_id','=',$team_user_id)->orderBy('start_time','desc')->take(6)->toArray();
+        $histories[0]['total_commission'] = static::extrapolateThisMonth($team_user_id);
+        $normalised_histories = array_map(function ($history) use ($ens) {
+            return $history['total_commission']/$ens[substr($history['start_time'], 5, 2)-1];
         },$histories);
-        $window_size = min(count($normalised_histories),6)-1;
+        $window_size = count($normalised_histories)-1;
         $total = $normalised_histories[$window_size];
         for ($i = $window_size; $i > 0; $i--) {
             $total = ($total * $beta) + ((1-$beta) * $normalised_histories[$i]);
@@ -65,7 +95,7 @@ class PredictionController extends Controller
         $results = [];
         for ($i = 0; $i < $n_months; $i++) {
             $pred_month = ((int) substr($histories[0]['start_time'],5,2)+$i) % 12;
-            array_push($results,$total * $expected_normalised_sales[$pred_month]);
+            array_push($results,$total * $ens[$pred_month]);
         }
         return $results;
     }
