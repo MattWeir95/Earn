@@ -47,7 +47,7 @@ class XeroController extends Controller
         $accessToken = new AccessToken(json_decode($token->access_token));
 
         if ($accessToken->hasExpired()) {
-            $accessToken = $this->getOAuth2()->refreshAccessToken($accessToken);
+            $accessToken = json_encode($this->getOAuth2()->refreshAccessToken($accessToken));
 
             $token->access_token = $accessToken;
             $token->save();
