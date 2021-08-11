@@ -10,6 +10,8 @@
 
             @livewire('teams.team-member-manager', ['team' => $team])
 
+            @livewire('teams.manage-team-target', ['team' => $team])
+
             @livewire('teams.manage-team-invoice-api', ['team' => $team])
 
             @livewire('teams.add-team-invoice-api', ['team' => $team]) 

@@ -36,8 +36,6 @@ class RuleController extends Controller
 
     function editForm(Request $req){
 
-        
-
         request()->validate([
             'rule_name' => ['required', 'max:15'],
             'start_date' => ['required','date','after_or_equal:today'],
