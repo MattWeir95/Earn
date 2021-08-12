@@ -18,8 +18,7 @@ class DeleteRuleTest extends TestCase
 
     public function test_delete_rule(){
 
-        Team::factory()->create();
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
         //Insert the rule

@@ -28,8 +28,7 @@ class CreateRuleTest extends TestCase
      */
     public function test_create_rule(){
 
-        Team::factory()->create();
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
         $attributes = [
