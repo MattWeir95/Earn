@@ -1,5 +1,5 @@
 
-@if(!$historic || !$prediction)
+@if(!$historic)
 <div>
     <widget>
         <div class="rounded-xl font-semibold border-2 shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
@@ -11,9 +11,10 @@
 
 <div>
     <widget>
-        <div class="rounded-xl font-semibold border-2 shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
-            <div class="" id=chart> </div>
+        <div class="rounded-xl font-semibold shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
+            <div class="mr-2" id=chart> </div>
         </div>
+        
     </widget>
 </div>
 @endif
@@ -76,14 +77,14 @@
             {
                 name: 'Prediction',
                 data: @json($prediction),
-                color: '#000000'
+                color: '#4f46e5'
             },
 
         ],
         xaxis: {
             labels:{
                 style: {
-                    colors : ['#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF']
+                    colors : ['#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF']
                 }
             },
             tickPlacement: 'on',
@@ -104,6 +105,11 @@
             }
         },
         legend: {
+            itemMargin: {
+          horizontal: 30,
+          vertical: 10,
+      },
+            position: 'top',
             
             labels: {
                 useSeriesColors: true,
