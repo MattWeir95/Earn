@@ -7,7 +7,7 @@ use App\Http\Controllers\ParsingController;
 use App\Classes\InvoiceGenerator;
 use App\Models\User;
 use App\Http\Controllers\RuleController;
-
+use App\Http\Controllers\TargetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +60,9 @@ Route::post('addNewRule',[RuleController:: class, 'insertRule'] )->name('newRule
 
 //Post for editing/deleteing a rule
 Route::post('editRule',[RuleController:: class, 'editForm'] )->name('editForm');
+
+//Post for updating target
+Route::post('updateTarget',[TargetController:: class, 'updateTarget'] )->name('targetForm');
 
 
 
