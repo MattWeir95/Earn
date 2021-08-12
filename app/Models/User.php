@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Jetstream\Jetstream;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -58,4 +59,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $appends = [
         'profile_photo_url',
     ];
+
+    
+    /**
+     * Get all of the team_user entries pertaining to the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function team_user_entries() {
+        return $this->hasMany(Jetstream::membershipModel());
+    }
 }

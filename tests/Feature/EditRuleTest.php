@@ -32,26 +32,26 @@ class EditRuleTest extends TestCase
 
         Team::factory()->create();
         $this->actingAs($user = User::factory()->create());
-        
+        $rule = Rule::factory()->make();
 
         //Insert a rule
         $attributes = [
-            'new_rule_name' => "Test Rule3",
-            'new_start_date' => "2021-08-05",
-            'new_end_date' => "2021-08-05",
-            'new_percentage' =>82,
-            'team_id' =>1    
+            'new_rule_name' => $rule->rule_name,
+            'new_start_date' => $rule->start_date,
+            'new_end_date' => $rule->end_date,
+            'new_percentage' =>$rule->percentage,
+            'team_id' => $user->current_team_id    
         ];
   
         $this->post('addNewRule', $attributes)->assertRedirect('rules');
 
         //Check rule is in the DB
         $dbAttributes = [
-            'rule_name' => "Test Rule3",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
-            'percentage' =>82    ,
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' =>$rule->percentage    ,
+            'team_id' =>$user->current_team_id     
         ];
         $this->assertDatabaseHas('rules', $dbAttributes);
 
@@ -63,11 +63,11 @@ class EditRuleTest extends TestCase
 
         //Edit the rule
         $EditRuleAttributes = [
-            'id' => 1,
-            'rule_name' => "Test Rule4",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
-            'percentage' =>83,
+            'id' => $rule->id,
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' =>$rule->percentage,
             'submitButton' => 'Update'
         ];
 
@@ -76,11 +76,11 @@ class EditRuleTest extends TestCase
 
         //Check new rule is in the DB
         $dbAttributes = [
-            'rule_name' => "Test Rule4",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
-            'percentage' =>83    ,
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' =>$rule->percentage    ,
+            'team_id' =>$user->current_team_id    
         ];
         $this->assertDatabaseHas('rules', $dbAttributes);
 
@@ -88,7 +88,7 @@ class EditRuleTest extends TestCase
         //Check the new values are on the livewire component
         Livewire::test(ViewRulesList::class, ['team' => $user->currentTeam])
                     ->call('render')
-                    ->assertSee($EditRuleAttributes['percentage'], $EditRuleAttributes['rule_name']);
+                    ->assertSee($rule->rule_name, $rule->percentage);
       
     }
 

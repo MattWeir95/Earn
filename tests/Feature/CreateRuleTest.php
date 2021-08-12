@@ -30,24 +30,24 @@ class CreateRuleTest extends TestCase
 
         Team::factory()->create();
         $this->actingAs($user = User::factory()->create());
-        
+        $rule = Rule::factory()->make();
 
         $attributes = [
-            'new_rule_name' => "Test Rule",
-            'new_start_date' => "2021-08-05",
-            'new_end_date' => "2021-08-05",
-            'new_percentage' =>82,
-            'team_id' =>1    
+            'new_rule_name' => $rule->rule_name,
+            'new_start_date' => $rule->start_date,
+            'new_end_date' => $rule->end_date,
+            'new_percentage' =>$rule->percentage,
+            'team_id' =>$user->current_team_id
         ];
   
         $this->post('addNewRule', $attributes)->assertRedirect('rules');
 
         $dbAttributes = [
-            'rule_name' => "Test Rule",
-            'start_date' => "2021-08-05",
-            'end_date' => "2021-08-05",
-            'percentage' =>82    ,
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' =>$rule->percentage    ,
+            'team_id' =>$user->current_team_id    
         ];
         $this->assertDatabaseHas('rules', $dbAttributes);
 
@@ -69,12 +69,13 @@ class CreateRuleTest extends TestCase
         Team::factory()->create();
 
         $this->actingAs($user = User::factory()->create());
+        $rule = Rule::factory()->make();
 
         $attributes = [
-            'new_start_date' => "2021-08-05",
-            'new_end_date' => "2021-08-05",
-            'new_percentage' =>82,
-            'team_id' =>1    
+            'new_start_date' => $rule->start_date,
+            'new_end_date' => $rule->end_date,
+            'new_percentage' =>$rule->percentage,
+            'team_id' =>$user->current_team_id 
         ];
  
         
@@ -90,12 +91,13 @@ class CreateRuleTest extends TestCase
         Team::factory()->create();
 
         $this->actingAs($user = User::factory()->create());
+        $rule = Rule::factory()->make();
 
         $attributes = [
-            'rule_name' => "Test Rule",
-            'new_end_date' => "2021-08-05",
-            'new_percentage' =>82,
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'new_end_date' => $rule->end_date,
+            'new_percentage' =>$rule->percentage,
+            'team_id' =>$user->current_team_id 
         ];
  
         
@@ -111,12 +113,13 @@ class CreateRuleTest extends TestCase
         Team::factory()->create();
 
         $this->actingAs($user = User::factory()->create());
+        $rule = Rule::factory()->make();
 
         $attributes = [
-            'rule_name' => "Test Rule",
-            'new_start_date' => "2021-08-05",
-            'new_percentage' =>82,
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'new_start_date' => $rule->start_date,
+            'new_percentage' =>$rule->percentage,
+            'team_id' =>$user->current_team_id 
         ];
  
         $this->post('addNewRule', $attributes)->assertSessionHasErrors('new_end_date');
@@ -131,12 +134,13 @@ class CreateRuleTest extends TestCase
         Team::factory()->create();
 
         $this->actingAs($user = User::factory()->create());
+        $rule = Rule::factory()->make();
 
         $attributes = [
-            'rule_name' => "Test Rule",
-            'new_start_date' => "2021-08-05",
-            'new_end_date' => "2021-08-05",
-            'team_id' =>1    
+            'rule_name' => $rule->rule_name,
+            'new_start_date' => $rule->start_date,
+            'new_end_date' => $rule->end_date,
+            'team_id' =>$user->current_team_id 
         ];
  
         $this->post('addNewRule', $attributes)->assertSessionHasErrors('new_percentage');
