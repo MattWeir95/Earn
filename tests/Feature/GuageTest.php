@@ -3,11 +3,11 @@
 namespace Tests\Feature;
 
 use App\Http\Livewire\Employees\Guage;
+use App\Models\History;
 use App\Models\Team;
+use App\Models\TeamUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Classes\InvoiceGenerator;
-use App\Http\Controllers\ParsingController;
 use Tests\TestCase;
 use Livewire\Livewire;
 
@@ -51,31 +51,53 @@ class GuageTest extends TestCase
             ->assertSee('target: ' . $target);
     }
 
-    // public function test_correct_employee_commission(){
+    public function test_correct_employee_commission(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $target = Team::where('id', $user->currentTeam->id)->first();
+        $target = $target->target_commission;
+        $user->currentTeam->users()->attach(
+            $otherUser = User::factory()->create(),
+            ['role' => 'employee']
+        );
+        $otherUser->switchTeam($user->currentTeam);
+        $teamUser = TeamUser::where('user_id', $otherUser->id)
+            ->where('team_id', $otherUser->currentTeam->id)
+            ->first();
 
-    // }
+        $history = History::factory()->create([
+            'team_user_id' => $teamUser->id,
+            'total_commission' => $target - 5
+        ]);
 
-    //Need parser explained to me
+        Livewire::test(Guage::class, ['user' => $otherUser])
+            ->call('render')
+            ->assertSee('earned: ' . $target - 5 . ', target: ' . $target);
+    }
+
     //Ensuring guage stops rotating once greater then 100%
 
-    //public function test_guage_target_edge_case(){
-        // $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        // $target = Team::where('id', $user->currentTeam->id)->first();
-        // $target = $target->target_commission;
-        // $user->currentTeam->users()->attach(
-        //     $otherUser = User::factory()->create(),
-        //     ['role' => 'employee']
-        // );
-        // $otherUser->switchTeam($user->currentTeam);
+    public function test_guage_target_edge_case(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $target = Team::where('id', $user->currentTeam->id)->first();
+        $target = $target->target_commission;
+        $user->currentTeam->users()->attach(
+            $otherUser = User::factory()->create(),
+            ['role' => 'employee']
+        );
+        $otherUser->switchTeam($user->currentTeam);
+        $teamUser = TeamUser::where('user_id', $otherUser->id)
+            ->where('team_id', $otherUser->currentTeam->id)
+            ->first();
 
-        // $gen = new InvoiceGenerator;
-        // [$item, $invoice] = $gen->getPair();
-        // $result = ParsingController::parseLineItem($item,$user->current_team_id);
+        $history = History::factory()->create([
+            'team_user_id' => $teamUser->id,
+            'total_commission' => $target + 100
+        ]);
 
-        // Livewire::test(Guage::class, ['user' => $otherUser])
-        //     ->call('render')
-        //     ->assertSee('rotate(${(45 + (Math.floor(100) * 1.8))}deg');
-   // }
+        Livewire::test(Guage::class, ['user' => $otherUser])
+            ->call('render')
+            ->assertSee('rotate(${(45 + (Math.floor(100) * 1.8))}deg');
+   }
 
     public function test_no_sales_history()
     {
