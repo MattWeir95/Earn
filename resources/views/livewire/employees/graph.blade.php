@@ -1,5 +1,5 @@
 
-@if(!$historic)
+@if(count($historic) <=0 )
 <div>
     <widget>
         <div class="rounded-xl font-semibold border-2 shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
@@ -82,9 +82,9 @@
 
         ],
         xaxis: {
-            labels:{
+            labels: {
                 style: {
-                    colors : ['#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF','#FFFFFF']
+                    colors : '#FFFFFF'
                 }
             },
             tickPlacement: 'on',
@@ -100,7 +100,7 @@
             labels: {
                 show: true,
                 style: {
-                    colors : ['#FFFFFF']
+                    colors : '#FFFFFF'
                 }
             }
         },

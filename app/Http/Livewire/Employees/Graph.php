@@ -36,33 +36,35 @@ class Graph extends Component
     
     public function render()
     {
-        //Need to get a rolling 6 months History & Predictions for the graph 
 
-        $currentMonth = Carbon::now($this->user->timezone)->format('n');
-        $currentYear = Carbon::now($this->user->timezone)->format('Y');
+        $team = $this->user->currentTeam;
+        $team_user = TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first();
 
+        $numberOfHistories = 5;
+        $totalCommission = [];
+        $months = [];
 
-        //History Data
-        $historic = array(0,0,0,0,0,0,0,0,0,0,0,0);
-        foreach(History::all()->where('team_user_id', $this->user->id) as $history) {
-            //Adds up all of the commision by month
-            $historic[Carbon::parse($history->end_time)->format('n') -1] += $history->total_commission;
-       
-        };
-       
-        //Predictions Data
-        $prediction = app('App\Http\Controllers\PredictionController')->predict($this->user->id, 6);
-        
-        //Months
-        $months = ['Jan', 'Feb', 'Mar', 'Apr','May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov','Dec'];
-        
-       
+        $histories = History::where('team_user_id','=',$team_user->id)->orderBy('start_time','desc')->take($numberOfHistories)->get();
 
+        //Fills the total commission array with the total commission earned for each month, 
+        //and the month array with the string format of the month for the graph.
+        for($x = 0; $x < count($histories) ; $x ++){
+            $totalCommission[$x] = $histories[$x]->total_commission;
+            $months[$x] = Carbon::parse($histories[$x]->end_time)->format('M');
+        }
+
+        //Returns an array of the predictions for the next n months
+        $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories));
+    
+    
         return view('livewire.employees.graph', [
-            'historic' => $historic,
-            'prediction' => $prediction,
+            'historic' => $totalCommission,
+            'prediction' => $predictions,
             'months' => $months,
         ]);
+
+
+       
         
     }
 }
