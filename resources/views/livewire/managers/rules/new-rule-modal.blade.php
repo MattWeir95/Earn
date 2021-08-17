@@ -2,7 +2,9 @@
 <div x-data="{isOpen: false}" x-cloak x-show="isOpen"  @keydown.escape.window="isOpen = false"
     @custom-new-rule-modal.window="isOpen = true"
     class="absolute inset-10 z-10 flex items-center justify-center" x-transition:enter="ease-out duration-300"
-    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100">
+    x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+    x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" 
+    x-transition:leave-end="opacity-0 transform scale-90">
 
     <div class="bg-white border-2 border-gray-200 rounded">
         <div @click="isOpen= false" class="flex flex-row justify-between mx-2">
