@@ -29,9 +29,9 @@ class EditRuleTest extends TestCase
      * @return void
      */
     public function test_edit_rule(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        Team::factory()->create();
-        $this->actingAs($user = User::factory()->create());
+
         $rule = Rule::factory()->make();
 
         //Insert a rule

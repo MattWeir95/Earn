@@ -82,7 +82,7 @@ class PredictionController extends Controller
     public static function predict(int $team_user_id, $n_months = 1, $beta = 0.75) {
         $ens = static::$expected_normalised_sales;
         
-        $histories = History::where('team_user_id','=',$team_user_id)->orderBy('start_time','desc')->take(6)->toArray();
+        $histories = History::where('team_user_id','=',$team_user_id)->orderBy('start_time','desc')->take(6)->get()->toArray();
         $histories[0]['total_commission'] = static::extrapolateThisMonth($team_user_id);
         $normalised_histories = array_map(function ($history) use ($ens) {
             return $history['total_commission']/$ens[substr($history['start_time'], 5, 2)-1];
@@ -95,7 +95,7 @@ class PredictionController extends Controller
         $results = [];
         for ($i = 0; $i < $n_months; $i++) {
             $pred_month = ((int) substr($histories[0]['start_time'],5,2)+$i) % 12;
-            array_push($results,$total * $ens[$pred_month]);
+            array_push($results,floor($total * $ens[$pred_month]));
         }
         return $results;
     }

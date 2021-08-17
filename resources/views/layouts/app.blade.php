@@ -15,6 +15,9 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+    {{-- Apex Chart Script --}}
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
