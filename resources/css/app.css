@@ -24,6 +24,10 @@
     counter-set: percentage var(--percentage);
 }
 
+.main-div-height {
+    height: 30rem
+}
+
 .gauge-percentage::after {
     content: counter(percentage) "%";
 }
@@ -52,3 +56,4 @@
 .scale-100 {
     transform: scale(1);
 }
+

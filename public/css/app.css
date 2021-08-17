@@ -33415,6 +33415,10 @@ select {
   counter-set: percentage var(--percentage);
 }
 
+.main-div-height {
+  height: 30rem
+}
+
 .gauge-percentage::after {
   content: counter(percentage) "%";
 }
@@ -195892,4 +195896,5 @@ select {
     --tw-backdrop-sepia: sepia(100%);
   }
 }
+
 

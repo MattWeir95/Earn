@@ -112,6 +112,6 @@ class TeamPolicy
      * @return mixed
      */
     public function isManager(User $user, Team $team){
-        return $user->ownsTeam($team);
+        return $user->hasTeamRole($team, 'manager');
     }
 }
