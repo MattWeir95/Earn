@@ -1,16 +1,16 @@
 <div x-data
-    class="gap-1 p-8 items-center border border-2 border-white rounded-lg p-2 bg-gradient-to-b from-indigo-300 to-indigo-400">
+    class="gap-1 p-8 items-center border border-2 border-white rounded-xl shadow-xl pb-4 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
     <form action={{ route('editForm') }} method="POST" class="">
         @csrf
 
         {{-- Rule Name --}}
-        <div class="mx-4 mt-2">
+        <div class="mx-4">
             <label class="text-white" for="rule_name">Name</label>
             <input x-data="{message: ''}" @custom-sendrule.window="
             message=$event.detail.message;" x-model="message.rule_name" id="rule_name" name="rule_name" type="text"
                 value=""
-                class=" mt-1 w-full rounded-lg border-gray-400 @error('rule_name') border-red-400 border-1 @enderror">
+                class=" mt-2 w-full rounded-lg border-gray-400 @error('rule_name') border-red-400 border-1 @enderror">
 
 
         </div>
@@ -42,7 +42,7 @@
 
 
         {{-- Active? --}}
-        <div class="flex justify-center items-center mt-2 text-white">
+        <div class="flex justify-center items-center mt-1 text-white">
             <label for="active" class="mr-2">Active</label>
             <input x-data="{message: ''}" @custom-sendrule.window="
         message=$event.detail.message;" x-model="message.active" id="active" name="active" type="checkbox"
@@ -53,14 +53,12 @@
             message=$event.detail.message;" x-model="message.id" id="id" name="id" type="text" class="hidden" />
 
         {{-- Buttons --}}
-        <div class="flex flex-1 justify-around mt-4 mb-2">
-
+        <div class="flex flex-1 justify-around mt-10">
             <button type="submit" value="Update" name="submitButton"
-                class="text-white border border-white rounded-lg px-1 transform hover:bg-indigo-500 hover:text-white ">Update</button>
+                class="text-white border border-white rounded-lg mx-1 w-28 transform hover:bg-indigo-500 hover:text-white ">Update</button>
 
             <button type="submit" value="Remove" name="submitButton"
-                class="text-white border border-white rounded-lg px-1 transform hover:bg-indigo-500 hover:text-white ">Remove</button>
-
+                class="text-white border border-white rounded-lg mx-1 w-28 transform hover:bg-indigo-500 hover:text-white ">Remove</button>
         </div>
 
 

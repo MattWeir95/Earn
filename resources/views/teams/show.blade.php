@@ -9,8 +9,9 @@
             @livewire('teams.update-team-name-form', ['team' => $team])
 
             @livewire('teams.team-member-manager', ['team' => $team])
-
+            @if (Gate::check('isManager', Auth::user()->currentTeam))
             @livewire('teams.manage-team-target', ['team' => $team])
+            @endif
 
             @livewire('teams.manage-team-invoice-api', ['team' => $team])
 
