@@ -40,27 +40,47 @@ class Graph extends Component
         $team = $this->user->currentTeam;
         $team_user = TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first();
 
-        $numberOfHistories = 5;
-        $totalCommission = [];
-        $months = [];
-
+        $numberOfHistories = 3;
+        //Retrive n ($numberOfHistories) number of historyies into the past.
         $histories = History::where('team_user_id','=',$team_user->id)->orderBy('start_time','desc')->take($numberOfHistories)->get();
 
-        //Fills the total commission array with the total commission earned for each month, 
-        //and the month array with the string format of the month for the graph.
+        $totalCommission = [];
+        //Fills the total commission array with the total commission earned for each month. 
         for($x = 0; $x < count($histories) ; $x ++){
             $totalCommission[$x] = $histories[$x]->total_commission;
-            $months[$x] = Carbon::parse($histories[$x]->end_time)->format('M');
         }
 
+        //reverses order of the array to have it from past to future
+        $totalCommission = array_reverse($totalCommission);
+
+        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        $monthsForGraph = [];
+        $currentMonth = Carbon::now($this->user->timezone)->format('n');
+        $monthCount = $currentMonth -$numberOfHistories;
+        $count = 0;
+
+        //Fills the $monthForGraph array with the amount of months of history and always 2 extra for the predictions
+        while($count < $numberOfHistories +2){
+
+            //Catches overflow and resets it back to 'Jan'
+            if($monthCount > 11){
+                $monthCount = 0;
+            }
+            $monthsForGraph[$count] = $months[$monthCount];
+            
+            $monthCount++;
+            $count++;
+        }
+        
+        $monthsOfPredictionInFuture = 2;
         //Returns an array of the predictions for the next n months
-        $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories));
+        $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories) + $monthsOfPredictionInFuture);
     
     
         return view('livewire.employees.graph', [
             'historic' => $totalCommission,
             'prediction' => $predictions,
-            'months' => $months,
+            'months' => $monthsForGraph,
         ]);
 
 
