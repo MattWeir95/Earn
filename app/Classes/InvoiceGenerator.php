@@ -53,7 +53,7 @@ class InvoiceGenerator
      * @return Invoice $invoice
      */
     function getInvoice($time = null) {
-        $team_user = TeamUser::inRandomOrder()->first();
+        $team_user = TeamUser::where('role', 'employee')->inRandomOrder()->first();
         $name = array_rand($this->services);
         $cost = $this->services[$name];
         return new Invoice($team_user,$name,$cost,$time);

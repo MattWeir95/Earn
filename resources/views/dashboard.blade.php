@@ -1,5 +1,5 @@
 <x-app-layout>
-        <div class="max-w-7xl mx-auto sm:px-2 lg:px-8 h-screen" >
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" >
             @if (Gate::check('isManager', Auth::user()->currentTeam))
                 <div>
                     @livewire('managers.dashboard.home', ['user' => Auth::user()])

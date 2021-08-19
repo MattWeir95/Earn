@@ -4,5 +4,7 @@
         @livewire('employees.guage', ['user' => Auth::user()])
         @livewire('employees.graph', ['user' => Auth::user()])
 </widget-container>
+<div>       
+        @livewire('employees.outstanding-modal', ['user' => Auth::user()]);
 </div>
 

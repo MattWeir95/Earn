@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="flex flex-1 justify-around mt-6">
-        <button @click="$wire.approve(commissionApprovals[index].id)"
+        <button @click="$wire.approve(commissionApprovals[index].id)" 
             class="text-white border border-white rounded-lg mx-1 w-28 transform hover:bg-indigo-500 hover:text-white">Approve</button>
         <button @click="$wire.flag(commissionApprovals[index].id)"
             class="text-white border border-white rounded-lg mx-1 w-28 transform hover:bg-indigo-500 hover:text-white">Flag</button>

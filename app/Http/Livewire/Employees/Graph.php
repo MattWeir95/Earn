@@ -50,33 +50,15 @@ class Graph extends Component
             $totalCommission[$x] = $histories[$x]->total_commission;
         }
 
-        //reverses order of the array to have it from past to future
-        $totalCommission = array_reverse($totalCommission);
 
-        $months = ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        $monthsForGraph = [];
-        $currentMonth = Carbon::now($this->user->timezone)->format('n');
-        $monthCount = $currentMonth -$numberOfHistories;
-        $count = 0;
-
-        //Fills the $monthForGraph array with the amount of months of history and always 2 extra for the predictions
-        while($count < $numberOfHistories +2){
-
-            //Catches overflow and resets it back to 'Jan'
-            if($monthCount > 11){
-                $monthCount = 0;
-            }
-            $monthsForGraph[$count] = $months[$monthCount];
-            
-            $monthCount++;
-            $count++;
+        //Returns an array of the predictions for the next n months if not return an empty array
+        if($totalCommission && $histories){
+        $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories));
+        }else{
+            $predictions = [];
         }
         
-        $monthsOfPredictionInFuture = 2;
-        //Returns an array of the predictions for the next n months
-        $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories) + $monthsOfPredictionInFuture);
-    
-    
+
         return view('livewire.employees.graph', [
             'historic' => $totalCommission,
             'prediction' => $predictions,

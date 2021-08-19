@@ -3,7 +3,7 @@
 <div>
     <widget>
         <div class="rounded-xl font-semibold border-2 shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
-           <div class="text-white text-3xl text-center py-20">No data to display</div>
+           <div class="text-white text-3xl text-center py-20">No Sales History</div>
         </div>
     </widget>
 </div>
