@@ -2,7 +2,7 @@
 {{-- absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full  --}}
 <div x-data class="">
     <div
-        class="flex flex-col items-center border border-2 border-white p-3 rounded-xl shadow-xl bg-gradient-to-b from-indigo-300 to-indigo-400 min-h-full ">
+        class="flex flex-col items-center  p-3 rounded-xl shadow-xl bg-gradient-to-b from-indigo-300 to-indigo-400 min-h-full ">
 
         @if($rules->isEmpty())
             <table class="w-full">

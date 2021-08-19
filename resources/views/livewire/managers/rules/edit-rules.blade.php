@@ -1,5 +1,5 @@
 <div x-data
-    class="gap-1 p-8 items-center border border-2 border-white rounded-xl shadow-xl pb-4 bg-gradient-to-b from-indigo-300 to-indigo-400">
+    class="gap-1 p-8 items-center  rounded-xl shadow-xl pb-4 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
     <form action={{ route('editForm') }} method="POST" class="">
         @csrf
