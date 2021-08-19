@@ -53,10 +53,20 @@ class Graph extends Component
             $months[$x] = Carbon::parse($histories[$x]->end_time)->format('M');
         }
 
-        //Returns an array of the predictions for the next n months
+        //Returns an array of the predictions for the next n months if not return an empty array
+        if($totalCommission && $histories){
         $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories));
+        }else{
+            $predictions = [];
+        }
+        
+        
+
+        
+        
     
     
+
         return view('livewire.employees.graph', [
             'historic' => $totalCommission,
             'prediction' => $predictions,
