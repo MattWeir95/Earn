@@ -101,8 +101,11 @@
                 show: true,
                 style: {
                     colors : '#FFFFFF'
-                }
-            }
+                },
+                formatter: function (value) {
+      return   "$" + value;
+    }
+            },
         },
         legend: {
             itemMargin: {
