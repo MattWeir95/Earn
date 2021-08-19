@@ -33,41 +33,40 @@ class OutstandingModal extends Component
     {
         $com = new TeamCommission;
         $com->approveCommission($id);
-        back();
     }
 
     public function flag($id)
     {
         $com = new TeamCommission;
         $com->flagCommission($id);
-        back();
     }
 
     public function render()
     {
-
         $teamUser = TeamUser::where('team_id', $this->user->currentTeam->id)->where('user_id', $this->user->id)->first();
         $comOustanding = History::where('team_user_id', $teamUser->id)
             ->where('flagged', 0)
             ->where('approved', 0)
             ->get();
 
+
         if ($comOustanding != null) {
-            $res = null;
+            $dueApproval = array();
             foreach ($comOustanding as $x) {
-                if (Carbon::parse($x->start_time)->format('m.y') != Carbon::today()->format('m.y')) {
-                    $res = $x;
-                    break;
+                if (Carbon::parse($x->start_time)->format('m.y') != Carbon::today()->format('m.y') && $x->total_commission > 0) {
+                    array_push($dueApproval, [
+                        'id' => $x->id,
+                        'total' => $x->total_commission,
+                        'start_time' => Carbon::parse($x->start_time)->toFormattedDateString(),
+                        'end_time' => Carbon::parse($x->end_time)->toFormattedDateString(),
+                    ]);
                 }
             }
         }
-        if ($res != null) {
+        if (count($dueApproval) > 0) {
             return view('livewire.employees.outstanding-modal', [
-                'id' => $res->id,
-                'total' => $res->total_commission,
-                'start_time' => Carbon::parse($res->start_time)->toFormattedDateString(),
-                'end_time' => Carbon::parse($res->end_time)->toFormattedDateString(),
-            ]);
+                'dueApproval' => $dueApproval
+            ]);  
         }
         return ("<div></div>");
     }
