@@ -1,9 +1,9 @@
 {
-    "name": "laravel/laravel",
+    "name": "any-code/earn",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "description": "Staff Commission App",
+    "keywords": ["earn", "commission", "staff"],
+    "license": "GPL-3.0+",
     "require": {
         "php": "^7.3|^8.0",
         "fideloper/proxy": "^4.4",
@@ -14,7 +14,7 @@
         "laravel/jetstream": "^2.3",
         "laravel/sanctum": "^2.6",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.0",
+        "livewire/livewire": "^2.5",
         "jackiedo/timezonelist": "5.*"
     },
     "require-dev": {

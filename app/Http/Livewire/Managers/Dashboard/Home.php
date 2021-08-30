@@ -3,11 +3,8 @@
 namespace App\Http\Livewire\Managers\Dashboard;
 
 use App\Actions\CommissionApproval\TeamCommission;
-use App\Models\History;
 use App\Models\TeamUser;
-use App\Models\User;
 use Livewire\Component;
-use Carbon\Carbon;
 
 class Home extends Component
 {
@@ -33,10 +30,14 @@ class Home extends Component
     {
         $outstandingCommissions = new TeamCommission;
         $outstandingCommissions = $outstandingCommissions->getTeamCommission($this->user);
-
         $total = count($outstandingCommissions);
-        return view('livewire.managers.dashboard.home', [
-            'total' => $total
-        ]);
+
+        $employees = TeamUser::where('team_id', $this->user->currentTeam->id)->where('role', 'employee')->count();
+        if ($employees) {
+            return view('livewire.managers.dashboard.home', [
+                'total' => $total
+            ]);
+        }
+        return view('livewire.managers.dashboard.default-home');
     }
 }
