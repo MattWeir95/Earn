@@ -33,6 +33,7 @@ class Home extends Component
         $total = count($outstandingCommissions);
 
         $employees = TeamUser::where('team_id', $this->user->currentTeam->id)->where('role', 'employee')->count();
+        
         if ($employees) {
             return view('livewire.managers.dashboard.home', [
                 'total' => $total
