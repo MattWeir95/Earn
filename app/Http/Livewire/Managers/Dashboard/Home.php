@@ -33,10 +33,12 @@ class Home extends Component
     {
         $outstandingCommissions = new TeamCommission;
         $outstandingCommissions = $outstandingCommissions->getTeamCommission($this->user);
-
         $total = count($outstandingCommissions);
-        return view('livewire.managers.dashboard.home', [
-            'total' => $total
-        ]);
+        //Temporary View Change
+        // return view('livewire.managers.dashboard.home', [
+        //     'total' => $total
+        // ]);
+
+        return view('livewire.managers.dashboard.default-home');
     }
 }
