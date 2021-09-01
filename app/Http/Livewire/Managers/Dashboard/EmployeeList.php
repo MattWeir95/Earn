@@ -9,6 +9,8 @@ use Livewire\Component;
 
 class EmployeeList extends Component
 {
+
+    public $selectedEmployee;
     /**
      * The user instance.
      *
@@ -36,14 +38,14 @@ class EmployeeList extends Component
         if($employees != null){
             foreach($employees as $employee)
             {
-                 $employeeName = User::where('id', $employee->user_id)->first();
-                 $employeeName = $employeeName->first_name . " " . $employeeName->last_name;
+
+                 $userObject = User::where('id', $employee->user_id)->first();
+                 $employeeName = $userObject->first_name . " " . $userObject->last_name;
 
                  $history = History::where('team_user_id', $employee->id)->firstWhere('end_time', now('AEST')->endOfMonth());
-                 $history = $history->total_commission;
                  $history != null
-                     ? array_push($employeeList, ['name' => $employeeName, 'currentSales' => $history, 'target' => $this->user->currentTeam->target_commission]) 
-                     : array_push($employeeList, ['name' => $employeeName, 'currentSales' => 0, 'target' => $this->user->currentTeam->target_commission]);
+                     ? array_push($employeeList, ['name' => $employeeName, 'currentSales' => $history->total_commission, 'target' => $this->user->currentTeam->target_commission, 'id' => $employee->user_id]) 
+                     : array_push($employeeList, ['name' => $employeeName, 'currentSales' => 0, 'target' => $this->user->currentTeam->target_commission,'id' => $employee->user_id]);
             }                
         }
     

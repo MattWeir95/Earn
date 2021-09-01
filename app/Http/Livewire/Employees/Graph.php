@@ -21,20 +21,28 @@ class Graph extends Component
     public $user;
 
     /**
+     * Determine team based on employee or manager view.
+     *
+     * @var mixed
+     */
+    public $teamId;
+
+    /**
      * Mount the component.
      *
      * @param  mixed  $user
      * @return void
      */
-    public function mount($user)
+    public function mount($user, $teamId)
     {
         $this->user = $user;
+        $this->teamId = $teamId;
     }
  
     public function render()
     {
-        $team = $this->user->currentTeam;
-        $team_user = TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first();
+        $team_user = ($this->teamId == null ?  TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first()
+                    : TeamUser::where('user_id', $this->user->id)->where('team_id', $this->teamId)->first());
 
         $numberOfHistories = 5;
         $totalCommission = [];
