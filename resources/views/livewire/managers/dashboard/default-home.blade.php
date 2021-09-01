@@ -1,4 +1,4 @@
-<div class="py-12 mx-auto">
+<div class="py-12 mx-auto lg:px-14">
     <div
         class="pt-8 text-center text-white rounded-xl shadow-xl bg-gradient-to-b from-indigo-300 to-indigo-400 main-div-height">
         <div x-data="{showHeading: false}" x-cloak x-show="showHeading" class="text-5xl lg:text-7xl"

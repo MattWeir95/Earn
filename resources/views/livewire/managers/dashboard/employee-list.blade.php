@@ -6,10 +6,12 @@
             <div class="flex flex-col items-start"> Commission (MTD)</div>
         </div>
     </employee-heading>
-    <div x-data="{employees: {{ $employees }}}" class="h-full">
+    <div x-data="{employees: {{ $employees }}, selectedEmployee: @entangle('selectedEmployee')}"
+        class="h-full">
         <template x-for="employee in employees">
             <div>
-                <div class="border-b-2 text-sm">
+                <div class="border-b-2 text-sm hover:bg-blue-300 rounded-md p-2 pt-0"
+                    @click="selectedEmployee = employee.id" @click>
                     <employee-list class="grid sm: grid-cols-6 mt-5">
                         <div class="col-span-2">
                             <div x-text="employee.name"> </div>
@@ -17,7 +19,8 @@
 
                         <div class="col-start-4 justify-start">
                             <div>
-                                <div class="pr-6" x-text="`$${parseFloat(employee.currentSales).toFixed(2)}`"></div>
+                                <div class="pr-6" x-text="`$${parseFloat(employee.currentSales).toFixed(2)}`">
+                                </div>
                             </div>
                         </div>
 
@@ -32,5 +35,16 @@
                     </employee-list>
                 </div>
         </template>
+        @if ($selectedEmployee != null)
+            <div x-show="selectedEmployee" @click="selectedEmployee = null"
+                class="absolute inset-10 z-10 flex items-center justify-center" x-cloak
+                x-transition:enter="ease-out duration-500" x-transition:enter-start="opacity-0 scale-90"
+                x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 transform scale-100"
+                x-transition:leave-end="opacity-0 transform scale-90">
+                @livewire('managers.dashboard.employee-modal', ['user_id' => $selectedEmployee])
+            </div>
+        @endif
     </div>
+
 </div>

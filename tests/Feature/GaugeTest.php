@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\Employees\Guage;
+use App\Http\Livewire\Employees\Gauge;
 use App\Models\History;
 use App\Models\Team;
 use App\Models\TeamUser;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Livewire\Livewire;
 
-class GuageTest extends TestCase
+class GaugeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -25,7 +25,7 @@ class GuageTest extends TestCase
             ['role' => 'employee']
         );
         $otherUser->switchTeam($user->currentTeam);
-        Livewire::test(Guage::class, ['user' => $otherUser])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
             ->call('render')
             ->assertSee('target: ' . $target);
     }
@@ -46,7 +46,7 @@ class GuageTest extends TestCase
             ['role' => 'employee']
         );
         $otherUser->switchTeam($user->currentTeam);
-        Livewire::test(Guage::class, ['user' => $otherUser])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
             ->call('render')
             ->assertSee('target: ' . $target);
     }
@@ -69,14 +69,14 @@ class GuageTest extends TestCase
             'total_commission' => $target - 5
         ]);
 
-        Livewire::test(Guage::class, ['user' => $otherUser])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
             ->call('render')
             ->assertSee('earned: ' . $target - 5 . ', target: ' . $target);
     }
 
-    //Ensuring guage stops rotating once greater then 100%
+    //Ensuring Gauge stops rotating once greater then 100%
 
-    public function test_guage_target_edge_case(){
+    public function test_gauge_target_edge_case(){
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $target = Team::where('id', $user->currentTeam->id)->first();
         $target = $target->target_commission;
@@ -94,7 +94,7 @@ class GuageTest extends TestCase
             'total_commission' => $target + 100
         ]);
 
-        Livewire::test(Guage::class, ['user' => $otherUser])
+        Livewire::test(Gauge::class, ['user' => $otherUser , 'teamId' => null])
             ->call('render')
             ->assertSee('rotate(${(45 + (Math.floor(100) * 1.8))}deg');
    }
@@ -109,8 +109,9 @@ class GuageTest extends TestCase
             ['role' => 'employee']
         );
         $otherUser->switchTeam($user->currentTeam);
-        Livewire::test(Guage::class, ['user' => $otherUser])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
             ->call('render')
             ->assertSee('No Sales Found');
     }
 }
+

@@ -2,22 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Classes\InvoiceGenerator;
-use App\Http\Controllers\ParsingController;
-use App\Http\Livewire\Employees\Guage;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Http\Livewire\Employees\Gauge;
 use Tests\TestCase;
-use App\Models\History;
 use App\Models\Team;
-use App\Models\TeamUser;
 use App\Models\User;
 use App\Models\Rule;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
-use Livewire\Livewire;
 
-use function PHPUnit\Framework\assertSame;
 
 class DevelopmentTest extends TestCase
 {
