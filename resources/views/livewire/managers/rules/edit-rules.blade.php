@@ -5,17 +5,27 @@
         <h1 class="text-white text-center font-bold pb-5">Edit Rule</h1>
     </div>
 
-    {{-- Selected Rule Name --}}
-    <p name="selected_rule_name" id="selected_rule_name" x-data="{message: ''}" @custom-sendrule.window="
-     message=$event.detail.message;" x-text="message.rule_name" class="text-white text-center"></p>
-
-    <form action={{ route('editForm') }} method="POST" class="">
+    <form action={{ route('editForm') }} method="POST" class=""
+        {{-- I am setting old input values into the x-data here so i can access them again when the page re-loads --}}
+        x-data="
+        {message: '', 
+        oldName: '{{ old('rule_name') }}', 
+        oldStartDate: '{{ old('start_date') }}', 
+        oldEndDate: '{{ old('end_date') }}', 
+        oldPercentage: '{{ old('percentage') }}', 
+        oldActive: '{{ old('active') }}'}" 
+        {{-- Grabs the rule from the event sent by the rule_list --}}
+        @custom-sendrule.window="  
+        message=$event.detail.message;">
         @csrf
+
+        {{-- In each of these i have a x-model which sets the value of the input, 
+        if there is a value coming in from the rule_list it is that other wise it is the old value --}}
 
         {{-- Rule Name --}}
         <div class="mx-4">
             <label class="text-white" for="rule_name">Name</label>
-            <input value="{{ old('rule_name') }}" id="rule_name" name="rule_name" type="text"
+            <input id="rule_name" name="rule_name" type="text" x-model="message.rule_name ? message.rule_name : oldName"
                 class=" mt-2 w-full rounded-lg border-gray-400 @error('rule_name') border-red-400 border-1 @enderror" />
 
 
@@ -24,21 +34,23 @@
         {{-- Start Date --}}
         <div class="mx-4 mt-2">
             <label for="start_date" class="text-white">Start Date</label>
-            <input value="{{ old('start_date') }}" id="start_date" name="start_date" type="date"
+            <input x-model="message.start_date ? message.start_date : oldStartDate" id="start_date" name="start_date"
+                type="date"
                 class="mt-1 w-full rounded-lg border-gray-400 @error('start_date') border-red-400 border-1 @enderror" />
         </div>
 
         {{-- End Date --}}
         <div class="mx-4 mt-2">
             <label class="text-white" for="end_date">End Date</label>
-            <input value="{{ old('end_date') }}" id="end_date" name="end_date" type="date"
+            <input x-model="message.end_date ? message.end_date : oldEndDate" id="end_date" name="end_date" type="date"
                 class="mt-1 w-full rounded-lg border-gray-400 @error('end_date') border-red-400 border-1 @enderror" />
         </div>
 
         {{-- Percentage --}}
         <div class="mx-4 mt-2">
             <label class="text-white" for="commision_amount">Commission (%)</label>
-            <input value="{{ old('percentage') }}" id="commision_amount" name="percentage" type="number"
+            <input x-model="message.percentage ? message.percentage : oldPercentage" id="commision_amount"
+                name="percentage" type="number"
                 class="mt-1 w-full rounded-lg border-gray-400 @error('percentage') border-red-400 border-1 @enderror" />
         </div>
 
@@ -46,7 +58,8 @@
         {{-- Active? --}}
         <div class="flex justify-center items-center mt-1 text-white">
             <label for="active" class="mr-2">Active</label>
-            <input value="{{ old('active') }}" id="active" name="active" type="checkbox" class="rounded  focus:ring-0">
+            <input x-model="message.active ? message.active : oldActive" id="active" name="active" type="checkbox"
+                class="rounded  focus:ring-0">
         </div>
         {{-- This is so i can pass the ID to the edit rule component --}}
         <input x-data="{message: ''}" @custom-sendrule.window="
