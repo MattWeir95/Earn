@@ -1,28 +1,26 @@
-{{-- Have this as absolute right now just for testing --}}
-{{-- absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-full  --}}
-<div x-data class="">
+<div>
     <div
         class="flex flex-col items-center  p-3 rounded-xl shadow-xl bg-gradient-to-b from-indigo-300 to-indigo-400 min-h-full ">
 
         @if($rules->isEmpty())
-            <table class="w-full">
-                {{-- Rule List Headings --}}
-                <tr class="text-white font-bold ">
-                    <td class="">Name</td>
-                    <td class="text-right">Active</td>
-                    <td class="text-right">%</td>
-                </tr>
-                <tr class="border-b border-white text-white">
-                    <td>No Active Rules</td>
-                </tr>
-            </table>
-        
+        <table class="w-full">
+            {{-- Rule List Headings --}}
+            <tr class="text-white font-bold ">
+                <td class="">Name</td>
+                <td class="text-right">Active</td>
+                <td class="text-right">%</td>
+            </tr>
+            <tr class="border-b border-white text-white">
+                <td>No Active Rules</td>
+            </tr>
+        </table>
+
         @endif
         @if(!$rules->isEmpty())
         {{-- Rule list --}}
         <div x-data class="w-full  overflow-y-auto max-h-60 pr-3">
 
-            <table class="w-full">
+            <table id="table" class="w-full" x-data="{selectedRule: ''}">
                 {{-- Rule List Headings --}}
                 <tr class="text-white font-bold ">
                     <td class="">Name</td>
@@ -33,10 +31,13 @@
                 @foreach ($rules as $rule )
 
                 {{-- Name --}}
-                <tr class="border-b border-white text-white">
-                    <td class=""><button @click="$dispatch('custom-sendrule', {message: {{ $rule }}})"
-                            class="">{{ $rule->rule_name }}</button></td>
-                    <td class="flex justify-end mr-3 mt-1">
+                <tr tabindex="1" class="border-b border-white text-white cursor-pointer"
+                    :class="selectedRule == {{ $rule->id }} ? 'font-bold' : ''"
+                    @click="$dispatch('custom-sendrule', {message: {{ $rule }}}); selectedRule='{{ $rule->id }}'">
+                    <td>{{ $rule->rule_name }}
+
+                    </td>
+                    <td class="flex justify-end mr-3 mt-1 ">
 
                         {{-- Return a active or inactive SVG --}}
                         @if($rule->active)
@@ -54,11 +55,14 @@
                                 d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                         </svg>
                     </td>
+
                     @endif
 
                     {{-- Percentage --}}
-                    <td class="text-right">{{ $rule->percentage }}</td>
+                    <td class="text-right ">{{ $rule->percentage }}</td>
+
                 </tr>
+
                 @endforeach
                 </tbody>
             </table>

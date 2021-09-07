@@ -1,9 +1,7 @@
 <div x-data class="gap-1 p-8 items-center rounded-xl shadow-xl pb-4 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
 
-    <div class="">
-        <h1 class="text-white text-center font-bold pb-5">Edit Rule</h1>
-    </div>
+    
 
     <form action={{ route('editForm') }} method="POST" class=""
         {{-- I am setting old input values into the x-data here so i can access them again when the page re-loads --}}
