@@ -33,7 +33,7 @@
                 {{-- Name --}}
                 <tr tabindex="1" class="border-b border-white text-white cursor-pointer"
                     :class="selectedRule == {{ $rule->id }} ? 'font-bold' : ''"
-                    @click="$dispatch('custom-sendrule', {message: {{ $rule }}}); selectedRule='{{ $rule->id }}'">
+                    @click="$dispatch('custom-sendrule', {message: {{ $rule }}}); selectedRule='{{ $rule->id }}'; ">
                     <td>{{ $rule->rule_name }}
 
                     </td>
@@ -69,9 +69,9 @@
         </div>
         @endif
         {{-- New Rule Button --}}
-        <div class="mt-3 text-xl">
+        <div x-data class="mt-3 text-xl">
             <button @click="$dispatch('custom-new-rule-modal')"
-                class="text-white border border-white rounded-lg px-1 transform hover:bg-indigo-500 hover:text-white ">New
+                class="text-white border border-white rounded-lg px-1 transform hover:bg-indigo-500">New
                 Rule</button>
         </div>
 
