@@ -22,26 +22,26 @@ x-show="isOpen"
             @csrf
             <div class="mx-4 mt-4">
                 <label for="rule_name">Name</label>
-                <input wire:model="rule_name" id="rule_name" type="text"
+                <input wire:model.defer="rule_name" id="rule_name" type="text"
                     class="mt-1 w-full rounded @error('rule_name') border-red-400 border-1 @enderror"
                      " />
             </div>
 
             <div class=" mx-4 mt-4">
                 <label for="start_date">Start Date</label>
-                <input wire:model="start_date" id="start_date" type="date"
+                <input wire:model.defer="start_date" id="start_date" type="date"
                     class="mt-1 w-full rounded @error('start_date') border-red-400 border-1 @enderror"
                      />
             </div>
             <div class="mx-4 mt-4">
                 <label for="end_date">End Date</label>
-                <input wire:model="end_date" id="end_date" type="date"
+                <input wire:model.defer="end_date" id="end_date" type="date"
                     class="mt-1 w-full rounded @error('end_date') border-red-400 border-1 @enderror"
                      />
             </div>
             <div class="mx-4 mt-4">
                 <label for="commision_amount">Commission (%)</label>
-                <input wire:model="percentage" id="commision_amount" type="number"
+                <input wire:model.defer="percentage" id="commision_amount" type="number"
                     class="mt-1 w-full rounded @error('percentage') border-red-400 border-1 @enderror"
                      />
             </div>
