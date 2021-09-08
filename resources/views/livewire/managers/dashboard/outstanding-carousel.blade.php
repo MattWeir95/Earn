@@ -23,13 +23,13 @@
     <div class="absolute inset-0 flex">
         <div class="flex items-center justify-start w-1/2">
             <button class="bg-white text-indigo-500 font-bold hover:shadow-lg rounded-full w-12 h-12 -ml-6"
-                x-on:click="index = index === 0 ? total : index - 1">
+                x-on:click="index = index === 0 ? total - 1 : index - 1">
                 &#8592;
             </button>
         </div>
         <div class="flex items-center justify-end w-1/2">
             <button class="bg-white text-indigo-500 font-bold hover:shadow-lg rounded-full w-12 h-12 -mr-6"
-                x-on:click="index = index === total ? 0 : index + 1">
+                x-on:click="index = index === total - 1 ? 0 : index + 1">
                 &#8594;
             </button>
         </div>
