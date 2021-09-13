@@ -37,14 +37,14 @@ class TeamCommission
 
     public function approveCommission($id)
     {
-        DB::table('history')
+        DB::table('histories')
             ->where('id', $id)
             ->update(['approved' => 1]);
     }
 
     public function flagCommission($id)
     {
-        DB::table('history')
+        DB::table('histories')
             ->where('id', $id)
             ->update(['flagged' => 1]);
     }
