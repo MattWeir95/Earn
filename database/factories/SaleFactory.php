@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Sales;
+use App\Models\Sale;
 use App\Models\History;
 use App\Models\TeamUser;
 use App\Classes\InvoiceGenerator;
@@ -10,14 +10,14 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Http\Controllers\RuleController;
 
-class SalesFactory extends Factory
+class SaleFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Sales::class;
+    protected $model = Sale::class;
 
     /**
      * Define the model's default state.
@@ -39,7 +39,7 @@ class SalesFactory extends Factory
 
     public function configure()
     {
-        return $this->afterCreating(function (Sales $sale) {
+        return $this->afterCreating(function (Sale $sale) {
             $p_his = History::where('team_user_id','=',$sale->team_user_id)
                 ->firstWhere('start_time','=',$sale->date->copy()->startOfMonth());
             if (is_null($p_his)) {

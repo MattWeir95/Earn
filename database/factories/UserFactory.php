@@ -52,6 +52,15 @@ class UserFactory extends Factory
         });
     }
 
+    public function onTeam(Team $team) {
+        return $this->state([
+            'current_team_id' => $team->id
+        ])->has(TeamUser::factory()->asRole('employee')
+            ->state(function (array $att, User $user) {
+                return ['team_id' =>$user->current_team_id, 'user_id' => $user->id];
+        }),'team_user_entries');
+    }
+
     /**
      * Indicate that the user should have a personal team.
      *

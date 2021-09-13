@@ -37,4 +37,10 @@ class TeamUserFactory extends Factory
         ]);
     }
 
+    public function asRole($role) {
+        return $this->state([
+            'role' => $role
+        ]);
+    }
+
 }
