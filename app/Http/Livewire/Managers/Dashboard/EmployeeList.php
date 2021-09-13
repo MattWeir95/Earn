@@ -31,21 +31,16 @@ class EmployeeList extends Component
 
     public function render()
     {
-
-        $employeeList = array();
-        $employees = TeamUser::where('team_id', $this->user->currentTeam->id)->where('role', 'employee')->get();
+        $employeeList = array(); 
+        $employees = $this->user->currentTeam->employees()->get();
 
         if($employees != null){
             foreach($employees as $employee)
             {
-
-                 $userObject = User::where('id', $employee->user_id)->first();
-                 $employeeName = $userObject->first_name . " " . $userObject->last_name;
-
-                 $history = History::where('team_user_id', $employee->id)->firstWhere('end_time', now('AEST')->endOfMonth());
+                 $history = $employee->currentHistory($this->user->currentTeam);
                  $history != null
-                     ? array_push($employeeList, ['name' => $employeeName, 'currentSales' => $history->total_commission, 'target' => $this->user->currentTeam->target_commission, 'id' => $employee->user_id]) 
-                     : array_push($employeeList, ['name' => $employeeName, 'currentSales' => 0, 'target' => $this->user->currentTeam->target_commission,'id' => $employee->user_id]);
+                     ? array_push($employeeList, ['name' => $employee->fullName(), 'currentSales' => $history->total_commission, 'target' => $this->user->currentTeam->target_commission, 'id' => $employee->id]) 
+                     : array_push($employeeList, ['name' => $employee->fullName(), 'currentSales' => 0, 'target' => $this->user->currentTeam->target_commission,'id' => $employee->id]);
             }                
         }
     

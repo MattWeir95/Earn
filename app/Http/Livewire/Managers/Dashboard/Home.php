@@ -28,17 +28,17 @@ class Home extends Component
 
     public function render()
     {
-        $outstandingCommissions = new TeamCommission;
-        $outstandingCommissions = $outstandingCommissions->getTeamCommission($this->user);
-        $total = count($outstandingCommissions);
-
-        $employees = TeamUser::where('team_id', $this->user->currentTeam->id)->where('role', 'employee')->count();
+        $employees = $this->user->currentTeam->employees()->get()->count();
         
         if ($employees) {
+            $outstandingCommissions = new TeamCommission;
+            $outstandingCommissions = $outstandingCommissions->getTeamCommission($this->user);
+            $total = count($outstandingCommissions);
             return view('livewire.managers.dashboard.home', [
                 'total' => $total
             ]);
         }
+        
         return view('livewire.managers.dashboard.default-home');
     }
 }

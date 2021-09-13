@@ -29,11 +29,8 @@ class ViewRulesList extends Component
 
     public function render()
     {
-        $rules = Rule::where('team_id', $this->team->id)->get();
-
-
         return view('livewire.managers.rules.view-rules-list', [
-            'rules' => $rules
+            'rules' => $this->team->rules()->get()
         ]);
     }
 }

@@ -3,14 +3,14 @@
 namespace App\Classes;
 
 use Carbon\Carbon;
-use App\Models\Sales;
+use App\Models\Sale;
 
 abstract class InvoiceFetcherInterface {
 
     public Carbon $lastFetch;
 
     public function __construct() {
-        $last_sale_date = Sales::orderByDesc('date')->first()->date;
+        $last_sale_date = Sale::orderByDesc('date')->first()->date;
         if (is_null($last_sale_date)) {
             $this->lastFetch = new Carbon('1/1/1970','AEST');
         } else {
@@ -30,7 +30,7 @@ abstract class InvoiceFetcherInterface {
      * Returns an array of invoices generated since last fetch
      * @return Array $invoices
      */
-    abstract function fetchInvoices();
+    abstract function fetchInvoices($access_token);
 
 }
 

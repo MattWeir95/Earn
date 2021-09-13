@@ -44,7 +44,7 @@ class OutstandingModal extends Component
     public function render()
     {
         $teamUser = TeamUser::where('team_id', $this->user->currentTeam->id)->where('user_id', $this->user->id)->first();
-        $comOustanding = History::where('team_user_id', $teamUser->id)
+        $comOustanding = $this->user->historiesForTeam($this->user->currentTeam)
             ->where('flagged', 0)
             ->where('approved', 0)
             ->get();

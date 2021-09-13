@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Sale;
 use App\Models\Sales;
 use App\Models\User;
 
@@ -43,7 +44,7 @@ class PopulateSales extends Command
         if (is_null(User::first())) {
             User::factory()->withPersonalTeam()->create();
         }
-        Sales::factory()
+        Sale::factory()
             ->count($this->argument('num_entries'))
             ->sequence(fn ($sequence) => ['date' => now('AEST')->subDays($sequence->index)])
             ->create();

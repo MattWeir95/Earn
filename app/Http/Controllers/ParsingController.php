@@ -7,7 +7,7 @@ use App\Models\TeamUser;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\History;
-use App\Models\Sales;
+use App\Models\Sale;
 use App\Models\InvoiceServiceToken;
 use XeroPHP\Models\Accounting\LineItem;
 use App\Classes\InvoiceGenerator;
@@ -17,7 +17,7 @@ use App\Http\Controllers\RuleController;
 
 class ParsingController extends Controller
 {
-    public static function parseLineItem(LineItem $item, $api_team_origin = 1)
+    public static function parseLineItem(LineItem $item, Team $team)
     {
         /*
         Parses the Xero LineItem and SMC's descriptions into Invoice objects
@@ -39,11 +39,8 @@ class ParsingController extends Controller
             return response('Invalid Format: Line item did not match the required format',400);
         }
         $names = explode(" ",$matches[2][0]);
-        $f_name = $names[0];
-        $l_name = $names[1];
-        $c_user_id = User::where('first_name','=',$f_name)->firstWhere('last_name','=',$l_name)->id;
-        $team_user = TeamUser::where('user_id','=',$c_user_id)->firstWhere('team_id','=',$api_team_origin);
-        return new Invoice($team_user,$matches[1][0],$amount,new Carbon($matches[4][0]));
+        $user = $team->users()->where('last_name',$names[1])->firstWhere('first_name',$names[0]);
+        return new Invoice($user,$team,$matches[1][0],$amount,new Carbon($matches[4][0]));
     }
 
     public static function saveInvoice(Invoice $invoice) {
@@ -51,15 +48,14 @@ class ParsingController extends Controller
         Saves an invoice object into the history and sales table.
         */
         $commission_paid = RuleController::getCommission($invoice);
-        Sales::create([
+        Sale::create([
             'team_user_id' => $invoice->team_user->id,
             'service_name' => $invoice->service_name,
             'service_cost' => $invoice->service_cost,
             'commission_paid' => $commission_paid,
             'date' => $invoice->date
         ]);
-        $p_his = History::all()->where('team_user_id','=',$invoice->team_user->id)
-            ->firstWhere('end_time','>',now());
+        $p_his = $invoice->team_user->currentHistory();
         if (is_null($p_his)) {
             $p_his = History::factory()->create([
                 'team_user_id' => $invoice->team_user->id,
@@ -83,7 +79,7 @@ class ParsingController extends Controller
         ];
         $gen = new InvoiceGenerator;
         foreach (Team::all() as $team) {
-            $token = InvoiceServiceToken::all()->firstWhere('team_id','=',$team->id);
+            $token = $team->invoiceServiceToken();
             if (is_null($token)) {
                 $token = InvoiceServiceToken::factory()->create(['team_id'=>$team->id]);
                 // continue;
@@ -93,7 +89,7 @@ class ParsingController extends Controller
             // not xero explicitly
             // $item = ParsingController::parseLineItem(XeroController::fetchInvoice($token));
             // $item = ParsingController::parseLineItem($gen->getXeroLineItem(),$team->id);  
-            $items = $fetchers[$token->app_name]->fetchInvoices();
+            $items = $fetchers[$token->app_name]->fetchInvoices($token->access_token);
             foreach ($items as $item) {
                 ParsingController::saveInvoice($item);
             }

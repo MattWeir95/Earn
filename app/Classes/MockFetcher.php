@@ -12,7 +12,7 @@ class MockFetcher extends InvoiceFetcherInterface {
      * Returns an array of invoices generated since last fetch
      * @return Array $invoices
      */
-    function fetchInvoices() {
+    function fetchInvoices($access_key) {
         $gen = new InvoiceGenerator;
         $invoices = [];
         for ($i = 0; $i < $this->lastFetch->diffInRealMinutes(now()); $i++) {
