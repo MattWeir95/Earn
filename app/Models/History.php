@@ -9,7 +9,7 @@ class History extends Model
 {
     use HasFactory;
 
-    protected $table = "history";
+    protected $table = "histories";
     public $timestamps = false;
     protected $primary_key = 'id';
 
@@ -26,4 +26,9 @@ class History extends Model
         'flagged',
         'approved'
     ];
+
+    public function teamUser() {
+        return $this->belongsTo(TeamUser::class);
+    }
+
 }

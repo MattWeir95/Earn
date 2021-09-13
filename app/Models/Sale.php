@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sales extends Model
+class Sale extends Model
 {
     use HasFactory;
 
@@ -18,4 +18,8 @@ class Sales extends Model
         'commission_paid',
         'date'
     ];
+
+    public function teamUser() {
+        return $this->belongsTo(TeamUser::class);
+    }
 }
