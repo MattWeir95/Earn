@@ -46,7 +46,11 @@ class Team extends JetstreamTeam
     ];
 
     public function invoiceServiceToken() {
-        return $this->hasOne(InvoiceServiceToken::class,'team_id','id')->first();
+        return $this->hasMany(InvoiceServiceToken::class,'team_id','id')->first();
+    }
+
+    public function invoiceServiceTokens() {
+        return $this->hasMany(InvoiceServiceToken::class, 'team_id', 'id');
     }
 
     public function teamUsers() {
