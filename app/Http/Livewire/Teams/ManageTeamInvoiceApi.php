@@ -28,7 +28,10 @@ class ManageTeamInvoiceApi extends Component
 
     public function render()
     {
-        $services = InvoiceServiceToken::select('app_name')->where('team_id' ,$this->team->id)->get();
+        $services = $this->team->invoiceServiceTokens()->get()
+            ->map(function ($token) {
+                return $token->app_name;
+            });
         return view('livewire.teams.manage-team-invoice-api', [
             'services' => $services
         ]);

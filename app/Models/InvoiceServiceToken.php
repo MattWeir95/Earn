@@ -21,4 +21,8 @@ class InvoiceServiceToken extends Model
     ];
 
     use HasFactory;
+
+    public function teams() {
+        return $this->belongsTo(Team::class, 'id', 'team_id');
+    }
 }
