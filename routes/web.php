@@ -28,7 +28,7 @@ Route::get('/login/xero', function(Request $request) {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 
