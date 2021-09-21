@@ -1,6 +1,6 @@
 <div>
     <div
-        class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-indigo-300 to-indigo-400 rounded-xl shadow-xl p-8 text-white ">
+        class="flex flex-col items-center justify-center gap-1 bg-gradient-to-b from-indigo-300 to-indigo-400 rounded-xl shadow-xl py-6 pb-6 px-10 text-white ">
         <div class="flex flex-col items-center justify-center m-2"
             x-data="{ earned: {{ $currentSales }}, target: {{ $target }} }">
             @if ($currentSales < $target)
