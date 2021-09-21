@@ -27,6 +27,19 @@ class ViewRulesList extends Component
         $this->team = $team;
     }
 
+
+    public function toggleActive($rule){
+
+        $jsonRule = json_decode($rule);
+        $newRule = Rule::find($jsonRule->id);
+        $newRule->active= !$jsonRule->active; 
+
+        $newRule->save();
+
+
+        }
+  
+
     public function render()
     {
         $rules = Rule::where('team_id', $this->team->id)->get();
