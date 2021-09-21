@@ -1,4 +1,3 @@
-<x-jet-section-border />
 <div class="mt-10 sm:mt-0">
     <x-jet-action-section>
         <x-slot name="title">
@@ -7,7 +6,7 @@
         <x-slot name="description">
             {{ __('Add additonal services that are supported through Earn.') }}
         </x-slot>
-        <x-slot name="content">
+        <x-slot name="content"> 
             <div class="grid grid-cols-6">
                 @if (count($services) > 0)
                     @foreach ($services as $service)
@@ -27,4 +26,4 @@
             </div>
         </x-slot>
     </x-jet-action-section>
-</div>
+</div> 

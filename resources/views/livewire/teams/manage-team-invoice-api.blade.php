@@ -1,4 +1,3 @@
-    <x-jet-section-border />
     <div class="mt-10 sm:mt-0">
         <x-jet-action-section>
             <x-slot name="title">
