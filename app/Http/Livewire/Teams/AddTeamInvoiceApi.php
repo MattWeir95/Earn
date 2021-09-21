@@ -30,9 +30,8 @@ class AddTeamInvoiceApi extends Component
 
     public function render()
     {
-        $activeServices = InvoiceServiceToken::select('app_name')->where('team_id' ,$this->team->id)->get();
+        $activeServices = $this->team->invoiceServiceTokens()->get();
         $unactiveServices = InvoiceService::select('app_name')->whereNotIn('app_name', $activeServices)->get();
-        
         return view('livewire.teams.add-team-invoice-api', [
             'services' => $unactiveServices
         ]);
