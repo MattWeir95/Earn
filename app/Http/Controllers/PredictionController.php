@@ -34,8 +34,8 @@ class PredictionController extends Controller
      * figures.
      * @param int $team_user_id
      */
-    public static function extrapolateThisMonth(int $team_user_id) {
-        $history = History::where('team_user_id','=',$team_user_id)
+    public static function extrapolateThisMonth(User $user, Team $team) {
+        $history = $user->historiesForTeam($team)
             ->firstWhere('start_time','=',now()->startOfMonth());
         return $history->total_commission/(now()->day/now()->daysInMonth);
     }
@@ -48,15 +48,15 @@ class PredictionController extends Controller
      * @param double $beta
      * @return double $target
      */
-    public static function getTarget(int $team_user_id, $beta = 0.75) {
+    public static function getTarget(User $user, Team $team, $beta = 0.75) {
         $ens = static::$expected_normalised_sales;
-        $histories = History::where('team_user_id','=',$team_user_id)
+        $histories = $user->historiesForTeam($team)
             ->where('end_time','<',now())
             ->orderBy('start_time','desc')
             ->take(6)
             ->toArray();
         if (is_null($histories)) {
-            // return TeamUser::find($team_user_id)->team->min_target
+            // return $team->min_target
             return 0;
         }
         $normalised_histories = array_map(function ($history) use ($ens) {
@@ -79,11 +79,11 @@ class PredictionController extends Controller
      * @param $beta : Momentum term for weighted averaging
      * @return Array $results
      */
-    public static function predict(int $team_user_id, $n_months = 1, $beta = 0.75) {
+    public static function predict(User $user, Team $team, $n_months = 1, $beta = 0.75) {
         $ens = static::$expected_normalised_sales;
         
-        $histories = History::where('team_user_id','=',$team_user_id)->orderBy('start_time','desc')->take(6)->get()->toArray();
-        $histories[0]['total_commission'] = static::extrapolateThisMonth($team_user_id);
+        $histories = $user->historiesForTeam($team)->orderBy('start_time','desc')->take(6)->get()->toArray();
+        $histories[0]['total_commission'] = static::extrapolateThisMonth($user, $team);
         $normalised_histories = array_map(function ($history) use ($ens) {
             return $history['total_commission']/$ens[substr($history['start_time'], 5, 2)-1];
         },$histories);

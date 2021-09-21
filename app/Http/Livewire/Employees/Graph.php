@@ -33,22 +33,19 @@ class Graph extends Component
      * @param  mixed  $user
      * @return void
      */
-    public function mount($user, $teamId)
+    public function mount($user, $team)
     {
         $this->user = $user;
-        $this->teamId = $teamId;
+        $this->team = $team;
     }
  
     public function render()
     {
-        $team_user = ($this->teamId == null ?  TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first()
-                    : TeamUser::where('user_id', $this->user->id)->where('team_id', $this->teamId)->first());
-
         $numberOfHistories = 5;
         $totalCommission = [];
         $months = [];
 
-        $histories = History::where('team_user_id','=',$team_user->id)->orderBy('start_time','desc')->take($numberOfHistories)->get();
+        $histories = $this->user->historiesForTeam($this->user->currentTeam)->orderBy('start_time','desc')->take($numberOfHistories)->get();
 
         //Fills the total commission array with the total commission earned for each month, 
         //and the month array with the string format of the month for the graph.
@@ -59,7 +56,7 @@ class Graph extends Component
 
         //Returns an array of the predictions for the next n months if not return an empty array
         if($totalCommission && $histories){
-        $predictions = app('App\Http\Controllers\PredictionController')->predict($team_user->id, count($histories));
+        $predictions = app('App\Http\Controllers\PredictionController')->predict($this->user, $this->user->currentTeam, count($histories));
         }else{
             $predictions = [];
         }

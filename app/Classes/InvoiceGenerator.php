@@ -3,6 +3,7 @@
 namespace App\Classes;
 
 use App\Models\TeamUser;
+use App\Models\Team;
 use App\Models\User;
 use XeroPHP\Models\Accounting\LineItem;
 
@@ -54,9 +55,11 @@ class InvoiceGenerator
      */
     function getInvoice($time = null) {
         $team_user = TeamUser::where('role', 'employee')->inRandomOrder()->first();
+        $user = User::find($team_user->user_id);
+        $team = Team::find($team_user->team_id);
         $name = array_rand($this->services);
         $cost = $this->services[$name];
-        return new Invoice($team_user,$name,$cost,$time);
+        return new Invoice($user,$team,$name,$cost,$time);
     }
 
     /**

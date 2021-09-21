@@ -98,10 +98,8 @@ class EditRules extends Component
 
     public function render()
     {
-        $rules = Rule::where('team_id', $this->team->id)->get();
-
         return view('livewire.managers.rules.edit-rules', [
-            'rules' => $rules
+            'rules' => $this->team->rules()->get()
         ]);
     }
 }

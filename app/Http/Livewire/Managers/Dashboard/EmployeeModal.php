@@ -11,13 +11,14 @@ class EmployeeModal extends Component
 
     public function mount($user_id)
     {
-        $this->selected_user = User::where('id', $user_id)->first();
+        $this->selected_user = User::find($user_id);
     }
 
     public function render()
     {
         return view('livewire.managers.dashboard.employee-modal', [
-            'user' => $this->selected_user
+            'user' => $this->selected_user,
+            'team' => $this->selected_user
         ]);
     }
 }

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\History;
 use App\Models\TeamUser;
 use App\Models\Team;
+use App\Models\User;
 use Carbon\Carbon;
 
 class Gauge extends Component
@@ -30,35 +31,30 @@ class Gauge extends Component
      * @param  mixed  $user
      * @return void
      */
-    public function mount($user, $teamId)
+    public function mount(User $user, Team $team)
     {
         $this->user = $user;
-        $this->teamId = $teamId;
+        $this->team = $team;
     }
 
    
 
     public function render()
     {   
-        //Current Sales
-        //Determines whether the request is coming from a logged in employee or from the manager view of all employees
-        $team_user = ($this->teamId == null ?  TeamUser::where('user_id', $this->user->id)->where('team_id', $this->user->currentTeam->id)->first() 
-        : TeamUser::where('user_id', $this->user->id)->where('team_id', $this->teamId)->first());
-                        
-        $currentSales = History::where('team_user_id', $team_user->id)->firstWhere('end_time', now('AEST')->endOfMonth());
-        $target = Team::where('id', $team_user->team_id)->first();
+        $currentSales = $this->user->currentHistory($this->team);
         if($currentSales != null){
             return view('livewire.employees.gauge', [
                 'currentSales' => $currentSales->total_commission,
                 'periodEndDate' => Carbon::parse($currentSales->end_time)->toFormattedDateString(),
-                'target' => $target->target_commission 
+                // TODO update this to fetched from prediction controller
+                'target' => $this->team->target_commission 
             ]);
         }
 
         return view('livewire.employees.gauge', [
             'currentSales' => 0,
             'periodEndDate' => 'No Sales Found',
-            'target' => $target->target_commission
+            'target' => $this->team->target_commission
         ]);
     }
 }
