@@ -45,7 +45,7 @@ class Graph extends Component
         $totalCommission = [];
         $months = [];
 
-        $histories = $this->user->historiesForTeam($this->user->currentTeam)->orderBy('start_time','desc')->take($numberOfHistories)->get();
+        $histories = $this->user->historiesForTeam($this->team)->orderBy('start_time','desc')->take($numberOfHistories)->get();
 
         //Fills the total commission array with the total commission earned for each month, 
         //and the month array with the string format of the month for the graph.
@@ -58,7 +58,7 @@ class Graph extends Component
 
         //Returns an array of the predictions for the next n months if not return an empty array
         if($totalCommission && $histories){
-        $predictions = app('App\Http\Controllers\PredictionController')->predict($this->user, $this->user->currentTeam, count($histories));
+        $predictions = app('App\Http\Controllers\PredictionController')->predict($this->user, $this->team, count($histories));
         }else{
             $predictions = [];
         }
