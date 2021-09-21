@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Livewire\Managers\Rules\NewRuleModal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -10,15 +11,13 @@ use App\Models\User;
 use App\Models\Team;
 use Livewire\Livewire;
 use App\Http\Livewire\Managers\Rules\ViewRulesList;
-
-
-
+use Illuminate\Support\Facades\DB;
 
 class CreateRuleTest extends TestCase
 {
     use RefreshDataBase;
 
-    
+
     /**
      * Test Post route for creating a rule redirects
      * Test Rule is created in the DB
@@ -26,59 +25,55 @@ class CreateRuleTest extends TestCase
      *
      * @return void
      */
-    public function test_create_rule(){
+    public function test_create_rule()
+    {
 
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
-        $attributes = [
-            'new_rule_name' => $rule->rule_name,
-            'new_start_date' => $rule->start_date,
-            'new_end_date' => $rule->end_date,
-            'new_percentage' =>$rule->percentage,
-            'team_id' =>$user->current_team_id
-        ];
-  
-        $this->post('addNewRule', $attributes)->assertRedirect('rules');
+       Livewire::test(NewRuleModal::class, [
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule')
+            ->assertRedirect('rules'); 
+
 
         $dbAttributes = [
             'rule_name' => $rule->rule_name,
             'start_date' => $rule->start_date,
             'end_date' => $rule->end_date,
-            'percentage' =>$rule->percentage    ,
-            'team_id' =>$user->current_team_id    
+            'percentage' => $rule->percentage,
+            'team_id' => $user->current_team_id
         ];
         $this->assertDatabaseHas('rules', $dbAttributes);
 
         Livewire::test(ViewRulesList::class, ['team' => $user->currentTeam])
-                    ->call('render')
-                    ->assertSee($attributes['new_percentage'], $attributes['new_rule_name']);
-      
+            ->call('render')
+            ->assertSee($rule->percentage, $rule->rule_name);
     }
 
-
-    
 
     /**
      * Test Rule rule_name validation
      *
      * @return void
      */
-    public function test_rule_requires_name(){
-        Team::factory()->create();
-
-        $this->actingAs($user = User::factory()->create());
+    public function test_rule_requires_name()
+    {
+ 
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
-        $attributes = [
-            'new_start_date' => $rule->start_date,
-            'new_end_date' => $rule->end_date,
-            'new_percentage' =>$rule->percentage,
-            'team_id' =>$user->current_team_id 
-        ];
- 
-        
-        $this->post('addNewRule', $attributes)->assertSessionHasErrors('new_rule_name');
+       Livewire::test(NewRuleModal::class, [
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule')
+            ->assertSee('The rule name field is required');
     }
 
     /**
@@ -86,42 +81,39 @@ class CreateRuleTest extends TestCase
      *
      * @return void
      */
-    public function test_rule_requires_start_date(){
-        Team::factory()->create();
-
-        $this->actingAs($user = User::factory()->create());
+    public function test_rule_requires_start_date()
+    {
+    
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
-        $attributes = [
+       Livewire::test(NewRuleModal::class, [
             'rule_name' => $rule->rule_name,
-            'new_end_date' => $rule->end_date,
-            'new_percentage' =>$rule->percentage,
-            'team_id' =>$user->current_team_id 
-        ];
- 
-        
-        $this->post('addNewRule', $attributes)->assertSessionHasErrors('new_start_date');
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule')
+            ->assertSee('The start date field is required');
     }
+    
 
     /**
      * Test Rule end_date validation
      *
      * @return void
      */
-    public function test_rule_requires_end_date(){
-        Team::factory()->create();
-
-        $this->actingAs($user = User::factory()->create());
+    public function test_rule_requires_end_date()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
-        $attributes = [
+       Livewire::test(NewRuleModal::class, [
             'rule_name' => $rule->rule_name,
-            'new_start_date' => $rule->start_date,
-            'new_percentage' =>$rule->percentage,
-            'team_id' =>$user->current_team_id 
-        ];
- 
-        $this->post('addNewRule', $attributes)->assertSessionHasErrors('new_end_date');
+            'start_date' => $rule->start_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule')
+            ->assertSee('The end date field is required');
     }
 
     /**
@@ -129,21 +121,17 @@ class CreateRuleTest extends TestCase
      *
      * @return void
      */
-    public function test_rule_requires_percentage(){
-        Team::factory()->create();
-
-        $this->actingAs($user = User::factory()->create());
+    public function test_rule_requires_percentage()
+    {
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         $rule = Rule::factory()->make();
 
-        $attributes = [
+       Livewire::test(NewRuleModal::class, [
             'rule_name' => $rule->rule_name,
-            'new_start_date' => $rule->start_date,
-            'new_end_date' => $rule->end_date,
-            'team_id' =>$user->current_team_id 
-        ];
- 
-        $this->post('addNewRule', $attributes)->assertSessionHasErrors('new_percentage');
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date
+            ])
+            ->call('insertRule')
+            ->assertSee('The percentage field is required');
     }
-
-    
 }

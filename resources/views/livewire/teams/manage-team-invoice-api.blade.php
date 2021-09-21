@@ -12,7 +12,7 @@
                     @if (count($services) > 0)
                         @foreach ($services as $service)
                             <div class="col-start-1 col-span-3">
-                                <x-jet-label value="{{ $service->app_name }}" />
+                                <x-jet-label value="{{ $service }}" />
                             </div>
                             <div class="col-start-6 mb-2">
                                 <x-jet-button wire:click="signout({{ $service }})"> {{ __('Sign Out') }}

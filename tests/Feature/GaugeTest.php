@@ -18,14 +18,13 @@ class GaugeTest extends TestCase
     public function test_correct_team_target()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $target = Team::where('id', $user->currentTeam->id)->first();
-        $target = $target->target_commission;
+        $target = $user->currentTeam->target_commission;
         $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(),
             ['role' => 'employee']
         );
         $otherUser->switchTeam($user->currentTeam);
-        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'team' => $otherUser->currentTeam])
             ->call('render')
             ->assertSee('target: ' . $target);
     }
@@ -39,22 +38,20 @@ class GaugeTest extends TestCase
         ];
 
         $this->post('updateTarget', $attributes);
-        $target = Team::where('id', $user->currentTeam->id)->first();
-        $target = $target->target_commission;
+        $target = $user->currentTeam->target_commission;
         $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(),
             ['role' => 'employee']
         );
         $otherUser->switchTeam($user->currentTeam);
-        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'team' => $otherUser->currentTeam])
             ->call('render')
-            ->assertSee('target: ' . $target);
+            ->assertSee('target: ' . $attributes['new_target']);
     }
 
     public function test_correct_employee_commission(){
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $target = Team::where('id', $user->currentTeam->id)->first();
-        $target = $target->target_commission;
+        $target = $user->currentTeam->target_commission;
         $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(),
             ['role' => 'employee']
@@ -69,7 +66,7 @@ class GaugeTest extends TestCase
             'total_commission' => $target - 5
         ]);
 
-        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'team' => $otherUser->currentTeam])
             ->call('render')
             ->assertSee('earned: ' . $target - 5 . ', target: ' . $target);
     }
@@ -78,8 +75,7 @@ class GaugeTest extends TestCase
 
     public function test_gauge_target_edge_case(){
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $target = Team::where('id', $user->currentTeam->id)->first();
-        $target = $target->target_commission;
+        $target = $user->currentTeam->target_commission;
         $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(),
             ['role' => 'employee']
@@ -94,7 +90,7 @@ class GaugeTest extends TestCase
             'total_commission' => $target + 100
         ]);
 
-        Livewire::test(Gauge::class, ['user' => $otherUser , 'teamId' => null])
+        Livewire::test(Gauge::class, ['user' => $otherUser , 'team' => $otherUser->currentTeam])
             ->call('render')
             ->assertSee('rotate(${(45 + (Math.floor(100) * 1.8))}deg');
    }
@@ -102,14 +98,13 @@ class GaugeTest extends TestCase
     public function test_no_sales_history()
     {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-        $target = Team::where('id', $user->currentTeam->id)->first();
-        $target = $target->target_commission;
+        $target = $user->currentTeam->target_commission;
         $user->currentTeam->users()->attach(
             $otherUser = User::factory()->create(),
             ['role' => 'employee']
         );
         $otherUser->switchTeam($user->currentTeam);
-        Livewire::test(Gauge::class, ['user' => $otherUser, 'teamId' => null])
+        Livewire::test(Gauge::class, ['user' => $otherUser, 'team' => $otherUser->currentTeam])
             ->call('render')
             ->assertSee('No Sales Found');
     }

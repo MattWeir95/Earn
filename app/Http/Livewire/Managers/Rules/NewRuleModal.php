@@ -35,11 +35,7 @@ class NewRuleModal extends Component
             }
         return redirect('rules');
     }
-
-        
-
      
-        
     public function render()
     {
         return view('livewire.managers.rules.new-rule-modal');

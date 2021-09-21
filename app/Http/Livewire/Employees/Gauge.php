@@ -23,7 +23,7 @@ class Gauge extends Component
      *
      * @var mixed
      */
-    public $teamId;
+    public $team;
 
     /**
      * Mount the component.
@@ -46,7 +46,6 @@ class Gauge extends Component
             return view('livewire.employees.gauge', [
                 'currentSales' => $currentSales->total_commission,
                 'periodEndDate' => Carbon::parse($currentSales->end_time)->toFormattedDateString(),
-                // TODO update this to fetched from prediction controller
                 'target' => $this->team->target_commission 
             ]);
         }
