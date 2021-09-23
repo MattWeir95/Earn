@@ -1,5 +1,5 @@
 <div
-    class="main-div-height grid-cols-1 gap-8 p-4 pt-2 text-base bg-gradient-to-b from-indigo-300 to-indigo-400 rounded-xl shadow-xl text-white h-auto">
+    class="grid-cols-1 gap-8 p-4 pt-2 text-base bg-gradient-to-b from-indigo-300 to-indigo-400 rounded-xl shadow-xl text-white h-auto">
     <employee-heading class="grid grid-cols-6">
         <div>Employee</div>
         <div class="col-start-4 col-span-2">
