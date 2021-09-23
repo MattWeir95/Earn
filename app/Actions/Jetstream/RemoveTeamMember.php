@@ -2,6 +2,9 @@
 
 namespace App\Actions\Jetstream;
 
+use App\Models\History;
+use App\Models\Sale;
+use App\Models\TeamUser;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
@@ -20,6 +23,8 @@ class RemoveTeamMember implements RemovesTeamMembers
      */
     public function remove($user, $team, $teamMember)
     {
+        $this->removeSalesAndHistory($teamMember, $team);
+        
         $this->authorize($user, $team, $teamMember);
 
         $this->ensureUserDoesNotOwnTeam($teamMember, $team);
@@ -59,5 +64,12 @@ class RemoveTeamMember implements RemovesTeamMembers
                 'team' => [__('You may not leave a team that you created.')],
             ])->errorBag('removeTeamMember');
         }
+    }
+
+    protected function removeSalesAndHistory($teamMember, $team){
+
+        $user = TeamUser::where('user_id', $teamMember->id)->where('team_id', $team->id)->first();
+        History::where('team_user_id', $user->id)->delete();
+        Sale::where('team_user_id', $user->id)->delete();
     }
 }

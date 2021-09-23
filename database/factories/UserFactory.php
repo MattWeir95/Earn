@@ -74,7 +74,7 @@ class UserFactory extends Factory
         $new_team_f = Team::factory()
             ->state(function (array $attributes, User $user) {
                 return ['name' => $user->first_name . '\'s Team', 'user_id' => $user->id, 'personal_team' => true,
-                'target_commission' => 200];
+                'target_commission' => 100];
         });
         $team_user_f = TeamUser::factory()->asManager()
             ->state(function (array $attributes, User $user) {

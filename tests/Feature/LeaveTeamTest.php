@@ -25,7 +25,8 @@ class LeaveTeamTest extends TestCase
         $component = Livewire::test(TeamMemberManager::class, ['team' => $user->currentTeam])
                         ->call('leaveTeam');
 
-        $this->assertCount(0, $user->currentTeam->fresh()->users);
+        //Manager is remaining member, can not have team with 0 members
+        $this->assertCount(1, $user->currentTeam->fresh()->users);
     }
 
     public function test_team_owners_cant_leave_their_own_team()

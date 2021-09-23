@@ -2,11 +2,7 @@
 
 namespace App\Http\Livewire\Managers\Dashboard;
 
-use App\Models\History;
-use App\Models\TeamUser;
-use App\Models\User;
 use Livewire\Component;
-use Carbon\Carbon;
 use App\Actions\CommissionApproval\TeamCommission;
 
 class OutstandingCarousel extends Component
@@ -19,6 +15,12 @@ class OutstandingCarousel extends Component
      */
     public $user;
 
+       /**
+     * The outstanding commissions.
+     *
+     * @var mixed
+     */
+    public $commissionApprovals;
     /**
      * Mount the component.
      *

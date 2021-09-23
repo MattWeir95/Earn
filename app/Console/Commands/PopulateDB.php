@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\InvoiceService;
 use App\Models\Sale;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -41,13 +42,14 @@ class PopulateDB extends Command
     public function handle()
     {
         $user = User::factory()->withPersonalTeam()->create();
-        for ($i = 0; $i <= $this->argument('employees'); $i++) {
+        for ($i = 0; $i < $this->argument('employees'); $i++) {
             $newUser = User::factory()->withPersonalTeam()->create();
             $user->currentTeam->users()->attach(
                 $newUser,
                 ['role' => 'employee']
             );
         }
+        InvoiceService::factory()->create();
         
         DB::table('rules')
             ->insert([
@@ -56,7 +58,7 @@ class PopulateDB extends Command
                 'start_date' => now('AEST')->subDays($this->argument('num_of_sales')),
                 'end_date' => now('AEST'),
                 'active' => 1,
-                'percentage' => rand(1, 5)
+                'percentage' => rand(10, 20)
             ]);
 
         Sale::factory()
