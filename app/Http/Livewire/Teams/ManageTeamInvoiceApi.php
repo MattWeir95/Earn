@@ -2,12 +2,13 @@
 
 namespace App\Http\Livewire\Teams;
 
+use App\Classes\Invoice;
+use App\Models\InvoiceService;
 use Livewire\Component;
 use App\Models\InvoiceServiceToken;
 
 class ManageTeamInvoiceApi extends Component
 {
-
     /**
      * The team instance.
      *
@@ -30,8 +31,9 @@ class ManageTeamInvoiceApi extends Component
     {
         $services = $this->team->invoiceServiceTokens()->get()
             ->map(function ($token) {
-                return $token->app_name;
+                return InvoiceService::where('id', $token->app_id)->value('app_name');
             });
+
         return view('livewire.teams.manage-team-invoice-api', [
             'services' => $services
         ]);
@@ -39,9 +41,11 @@ class ManageTeamInvoiceApi extends Component
 
     public function signout($service)
     {
-         $deleteQuery = InvoiceServiceToken::where(['app_name' => $service, 'team_id' => $this->team->id])
+        
+        $serviceId = InvoiceService::where(['app_name' => $service])->value('id');
+        $deleteQuery = InvoiceServiceToken::where(['app_id' => $serviceId, 'team_id' => $this->team->id])
              ->delete();
-
+        $this->emit('serviceRemoved');
         return back();
             
     }

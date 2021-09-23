@@ -10,6 +10,7 @@ use Symfony\Component\VarDumper\VarDumper;
 
 class AddTeamInvoiceApi extends Component
 {
+    protected $listeners = ['serviceRemoved' => 'render'];
     /**
      * The team instance.
      *
@@ -31,7 +32,12 @@ class AddTeamInvoiceApi extends Component
     public function render()
     {
         $activeServices = $this->team->invoiceServiceTokens()->get();
-        $unactiveServices = InvoiceService::select('app_name')->whereNotIn('app_name', $activeServices)->get();
+        if(count($activeServices) > 0){
+            $unactiveServices = InvoiceService::whereNotIn('id', $activeServices[0])->get();
+        }
+        else {
+            $unactiveServices = InvoiceService::all();
+        }
         return view('livewire.teams.add-team-invoice-api', [
             'services' => $unactiveServices
         ]);
@@ -40,9 +46,7 @@ class AddTeamInvoiceApi extends Component
     //Define different service sign ins here.
     public function signin($service)
     {
-        $service = InvoiceService::select('app_name')->where('app_name', $service)->first();
-
-        switch($service["app_name"]){
+        switch($service['app_name']){
             case "Xero":
                 $x = new XeroController;
                 $x->redirectUserToXero();

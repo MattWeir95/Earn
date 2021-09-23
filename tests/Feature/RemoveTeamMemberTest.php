@@ -23,8 +23,9 @@ class RemoveTeamMemberTest extends TestCase
         $component = Livewire::test(TeamMemberManager::class, ['team' => $user->currentTeam])
                         ->set('teamMemberIdBeingRemoved', $otherUser->id)
                         ->call('removeTeamMember');
-
-        $this->assertCount(0, $user->currentTeam->fresh()->users);
+                        
+        //Manager is remaining member, can not have team with 0 members
+        $this->assertCount(1, $user->currentTeam->fresh()->users);
     }
 
     public function test_only_team_owner_can_remove_team_members()

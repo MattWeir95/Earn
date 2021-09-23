@@ -10,6 +10,7 @@
 
             @livewire('teams.team-member-manager', ['team' => $team])
             @if (Gate::check('isManager', Auth::user()->currentTeam))
+            <x-jet-section-border />
             @livewire('teams.manage-team-target', ['team' => $team])
             @endif
 

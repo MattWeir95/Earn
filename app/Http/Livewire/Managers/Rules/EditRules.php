@@ -94,8 +94,6 @@ class EditRules extends Component
         return redirect('rules');
     }
 
-
-
     public function render()
     {
         return view('livewire.managers.rules.edit-rules', [

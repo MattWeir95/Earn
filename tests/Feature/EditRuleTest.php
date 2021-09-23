@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Http\Livewire\Managers\Rules\EditRules;
+use App\Http\Livewire\Managers\Rules\NewRuleModal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -30,20 +32,17 @@ class EditRuleTest extends TestCase
      */
     public function test_edit_rule(){
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
-
         $rule = Rule::factory()->make();
 
         //Insert a rule
-        $attributes = [
-            'new_rule_name' => $rule->rule_name,
-            'new_start_date' => $rule->start_date,
-            'new_end_date' => $rule->end_date,
-            'new_percentage' =>$rule->percentage,
-            'team_id' => $user->current_team_id    
-        ];
-  
-        $this->post('addNewRule', $attributes)->assertRedirect('rules');
+        Livewire::test(NewRuleModal::class, [
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule')
+            ->assertRedirect('rules'); 
 
         //Check rule is in the DB
         $dbAttributes = [
@@ -58,20 +57,21 @@ class EditRuleTest extends TestCase
         //Check the values are on the livewire component
         Livewire::test(ViewRulesList::class, ['team' => $user->currentTeam])
                     ->call('render')
-                    ->assertSee($attributes['new_percentage'], $attributes['new_rule_name']);
+                    ->assertSee($dbAttributes['percentage'], $dbAttributes['rule_name']);
 
 
         //Edit the rule
-        $EditRuleAttributes = [
-            'id' => $rule->id,
-            'rule_name' => $rule->rule_name,
-            'start_date' => $rule->start_date,
-            'end_date' => $rule->end_date,
-            'percentage' =>$rule->percentage,
-            'submitButton' => 'Update'
-        ];
+        $newRule = Rule::factory()->make();
 
-        $this->post('editRule', $EditRuleAttributes)->assertRedirect('rules');
+        Livewire::test(EditRules::class, [
+            'team' => $user->currentTeam,
+            'message' => $rule->id,
+            'rule_name' => $newRule->rule_name,
+            'start_date' => $newRule->start_date,
+            'end_date' => $newRule->end_date,
+            'percentage' => $newRule->percentage,    
+            ])
+            ->call('editRule');
 
 
         //Check new rule is in the DB

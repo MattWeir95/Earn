@@ -45,7 +45,7 @@ class Graph extends Component
         $totalCommission = [];
         $months = [];
 
-        $histories = $this->user->historiesForTeam($this->user->currentTeam)->orderBy('start_time','desc')->take($numberOfHistories)->get();
+        $histories = $this->user->historiesForTeam($this->team)->orderBy('start_time','desc')->take($numberOfHistories)->get();
 
         //Fills the total commission array with the total commission earned for each month, 
         //and the month array with the string format of the month for the graph.
@@ -54,9 +54,11 @@ class Graph extends Component
             $months[$x] = Carbon::parse($histories[$x]->end_time)->format('M');
         }
 
+        $flippedMonths = array_reverse($months);
+
         //Returns an array of the predictions for the next n months if not return an empty array
         if($totalCommission && $histories){
-        $predictions = app('App\Http\Controllers\PredictionController')->predict($this->user, $this->user->currentTeam, count($histories));
+        $predictions = app('App\Http\Controllers\PredictionController')->predict($this->user, $this->team, count($histories));
         }else{
             $predictions = [];
         }
@@ -64,7 +66,7 @@ class Graph extends Component
         return view('livewire.employees.graph', [
             'historic' => $totalCommission,
             'prediction' => $predictions,
-            'months' => $months,
+            'months' => $flippedMonths,
         ]);
     }
 }
