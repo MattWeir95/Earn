@@ -28,7 +28,7 @@ Route::get('/login/xero', function(Request $request) {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 
@@ -48,8 +48,6 @@ Route::post('addNewRule',[RuleController:: class, 'insertRule'] )->name('newRule
 //Post for editing/deleteing a rule
 Route::post('editRule',[RuleController:: class, 'editForm'] )->name('editForm');
 
-//Post for updating target
-Route::post('updateTarget',[TargetController:: class, 'updateTarget'] )->name('targetForm');
 
 
 

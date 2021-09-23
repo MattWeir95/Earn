@@ -15,8 +15,6 @@ class InvoiceServiceToken extends Model
     protected $fillable = [
         'team_id',
         'app_id',
-        'api_id',
-        'app_name',
         'access_token'
     ];
 

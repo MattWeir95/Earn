@@ -26,7 +26,7 @@ class TeamFactory extends Factory
             'name' => $this->faker->unique()->company,
             'user_id' => User::factory(),
             'personal_team' => true,
-            'target_commission' => 200
+            'target_commission' => 100
         ];
     }
 }

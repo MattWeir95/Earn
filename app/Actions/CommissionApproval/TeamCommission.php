@@ -2,9 +2,6 @@
 
 namespace App\Actions\CommissionApproval;
 
-use App\Models\History;
-use App\Models\TeamUser;
-use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
