@@ -1,30 +1,29 @@
-
-@if(count($historic) <=0 )
 <div>
     <widget>
-        <div class="rounded-xl font-semibold border-2 shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
-           <div class="text-white text-3xl text-center py-20">No Sales History</div>
-        </div>
-    </widget>
-</div>
-@else
-
-<div>
-    <widget>
-        <div class="rounded-xl font-semibold shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400">
+        <div class="rounded-xl font-semibold shadow-xl w-full bg-gradient-to-b from-indigo-300 to-indigo-400 min-h-full">
             <div class="mr-2" id=chart> </div>
         </div>
         
     </widget>
 </div>
-@endif
 
 
 
 
 <script>
     var options = {
-        
+        noData: {
+  text: "No Sales History",
+  align: 'center',
+  verticalAlign: 'middle',
+  offsetX: 0,
+  offsetY: 0,
+  style: {
+    color: '#FFFFFF',
+    fontSize: '14px',
+    
+  },
+},
         stroke: {
           width: 2,
           curve: 'smooth',
@@ -70,6 +69,7 @@
             },
         },
         series: [{
+                
                 name: 'Historic',
                 data: @json($historic),
                 color: '#FFFFFF'
@@ -97,6 +97,8 @@
             },
         },
         yaxis: {
+            tickAmount:5,
+            showForNullSeries: false,
             labels: {
                 show: true,
                 style: {
@@ -108,6 +110,9 @@
             },
         },
         legend: {
+            onItemClick: {
+          toggleDataSeries: false
+      },
             itemMargin: {
           horizontal: 30,
           vertical: 10,
