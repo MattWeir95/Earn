@@ -15,12 +15,6 @@ class OutstandingCarousel extends Component
      */
     public $user;
 
-       /**
-     * The outstanding commissions.
-     *
-     * @var mixed
-     */
-    public $commissionApprovals;
     /**
      * Mount the component.
      *

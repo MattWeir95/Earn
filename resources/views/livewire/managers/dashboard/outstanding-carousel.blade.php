@@ -1,12 +1,11 @@
 <div x-data="{index: 0,total: {{ $total }}, commissionApprovals:{{ $commissionApprovals }}}"
     class="main-div-height p-4 pt-2 text-base bg-gradient-to-b from-indigo-300 to-indigo-400 rounded-xl shadow-xl text-white relative">
     <commission-approval class="text-black p-12 m-6 rounded-xl bg-white flex flex-col items-center justify-center">
-        <div class=" text-5xl items-center flex flex-col pb-10 sm: text-base pb-4"
+        <div class=" text-3xl text-center items-center flex flex-col pb-10 sm: text-base pb-4"
             x-text="commissionApprovals[index].name">
         </div>
         <div class=" text-2xl items-center flex flex-col md:text-4xl lg:text-4xl"
             x-text="`$${parseFloat(commissionApprovals[index].totalCommission).toFixed(2)}`">
-
         </div>
         <div class=" text-1xl items-center flex flex-col pt-10 sm: text-sm sm: pt-2">
             Active Period:

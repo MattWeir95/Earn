@@ -1,4 +1,4 @@
-<div x-data class="gap-1 p-8 items-center rounded-xl shadow-xl pb-4 bg-gradient-to-b from-indigo-300 to-indigo-400">
+<div x-data class=" main-div-height gap-1 p-8 items-center rounded-xl shadow-xl pb-4 bg-gradient-to-b from-indigo-300 to-indigo-400">
 
     <form wire:submit.prevent="editRule" 
         {{-- Entangle the event data so i can access it from livewire --}}
