@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Http\Livewire\Employees\Home;
 use App\Http\Livewire\Employees\OutstandingModal;
 use App\Models\History;
 use App\Models\TeamUser;
@@ -16,7 +15,7 @@ class EmployeeApprovalTest extends TestCase
 {
 
     use RefreshDatabase;
-    
+
     //Modal does not render when no outstanding commissions for previous months
     public function test_employee_approval_not_rendered()
     {
@@ -137,10 +136,6 @@ class EmployeeApprovalTest extends TestCase
         ];
 
         $this->assertDatabaseHas('histories', $dbAttributes);
-
-        Livewire::test(OutstandingModal::class, ['user' => $otherUser])
-            ->call('render')
-            ->assertSeeHtml('id="no-approvals"');
     }
 
     //Commission can be flagged
@@ -195,18 +190,5 @@ class EmployeeApprovalTest extends TestCase
         ];
 
         $this->assertDatabaseHas('histories', $dbAttributes);
-
-        Livewire::test(OutstandingModal::class, ['user' => $otherUser])
-            ->call('render')
-            ->assertSeeHtml('id="no-approvals"');
     }
-
-    //Modal disapears when commission is approved
-
-
-    //Modal disapears when commission is flagged
-
-
-    //New Modal appears when multiple outstanding commissions
-
 }

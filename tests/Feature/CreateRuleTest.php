@@ -4,14 +4,11 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\Managers\Rules\NewRuleModal;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Rule;
 use App\Models\User;
-use App\Models\Team;
 use Livewire\Livewire;
 use App\Http\Livewire\Managers\Rules\ViewRulesList;
-use Illuminate\Support\Facades\DB;
 
 class CreateRuleTest extends TestCase
 {

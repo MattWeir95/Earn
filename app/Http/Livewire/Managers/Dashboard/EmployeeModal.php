@@ -9,6 +9,7 @@ use Livewire\Component;
 class EmployeeModal extends Component
 {
     public $selected_user;
+    public $team;
 
     public function mount($user_id, Team $team)
     {
