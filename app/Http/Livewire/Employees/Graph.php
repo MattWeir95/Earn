@@ -63,8 +63,10 @@ class Graph extends Component
             $predictions = [];
         }
 
+        $flippedTotalCommission = array_reverse($totalCommission);
+        
         return view('livewire.employees.graph', [
-            'historic' => $totalCommission,
+            'historic' => $flippedTotalCommission,
             'prediction' => $predictions,
             'months' => $flippedMonths,
         ]);
