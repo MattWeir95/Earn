@@ -105,7 +105,7 @@
                     colors : '#FFFFFF'
                 },
                 formatter: function (value) {
-      return   "$" + value;
+      return   "$" + Math.round((value + Number.EPSILON) * 100) / 100
     }
             },
         },
