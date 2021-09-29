@@ -3,16 +3,18 @@
     x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
     x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100"
     x-transition:leave-end="opacity-0 transform scale-90" x-init="setTimeout(() => isOpen = true, 1000)">
-    <div class="bg-white border-2 border-gray-200 rounded p-2">
-        <div @click="isOpen= false" class="flex flex-row justify-between">
-            <h1 class="font-bold text-2xl">Commission Approval</h1>
-            <button>X</button>
+    <div class="bg-white border-2 border-gray-200 rounded p-2 text-center">
+        <div @click="isOpen= false" class="flex flex-row justify-end">
+            <h1 class="font-bold text-2xl mr-2 md:mr-14">Commission Approval</h1>
+            <button class="">X</button>
         </div>
         <div>
             <p class="text-md mt-6">Your previous commission period is pending approval</p>
             <p class="text-xl mt-6">Total: ${{ $approval[0]['total'] }}</p>
-            <p class="text-md mt-2">Active Period: {{ $approval[0]['start_time'] }}-{{ $approval[0]['end_time'] }}
+            <p class="text-md mt-2 font-semibold">Active Period
+            
             </p>
+            <p class="text-md mt-2">{{ $approval[0]['start_time'] }}-{{ $approval[0]['end_time'] }}</p>
         </div>
 
         <div class="flex justify-center pt-2 mt-6">
