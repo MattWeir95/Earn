@@ -42,7 +42,11 @@ class PopulateSales extends Command
     public function handle()
     {
         if (is_null(User::first())) {
-            User::factory()->withPersonalTeam()->create();
+            $user = User::factory()->withPersonalTeam()->create();
+            $user->currentTeam->users()->attach(
+                User::factory()->withPersonalTeam()->create(),
+                ['role' => 'employee']
+            );
         }
         Sale::factory()
             ->count($this->argument('num_entries'))

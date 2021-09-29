@@ -38,8 +38,7 @@
         @if ($selectedEmployee != null)
             <div x-show="selectedEmployee" @click="selectedEmployee = null"
                 class="absolute inset-10 z-10 flex items-center justify-center" x-cloak
-                x-transition:enter="ease-out duration-500" x-transition:enter-start="opacity-0 scale-90"
-                x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-300"
+                x-transition:leave="transition ease-in duration-300"
                 x-transition:leave-start="opacity-100 transform scale-100"
                 x-transition:leave-end="opacity-0 transform scale-90">
                 @livewire('managers.dashboard.employee-modal', ['user_id' => $selectedEmployee, 'team' => Auth::user()->currentTeam])
