@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Team;
 use Livewire\Livewire;
 use App\Http\Livewire\Managers\Rules\ViewRulesList;
+use Carbon\Carbon;
 
 
 
@@ -90,6 +91,130 @@ class EditRuleTest extends TestCase
                     ->call('render')
                     ->assertSee($rule->rule_name, $rule->percentage);
       
+    }
+
+    public function test_edit_rule_name_exceeds_limit(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $rule = Rule::factory()->make();
+
+        //Insert a rule
+        Livewire::test(NewRuleModal::class, [
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule');
+
+
+        //Edit the rule
+        $newRule = Rule::factory()->make();
+        $newRule->rule_name = 1123456789123456;
+
+        Livewire::test(EditRules::class, [
+            'team' => $user->currentTeam,
+            'message' => $rule->id,
+            'rule_name' => $newRule->rule_name,
+            'start_date' => $newRule->start_date,
+            'end_date' => $newRule->end_date,
+            'percentage' => $newRule->percentage,    
+            ])
+            ->call('editRule')
+            ->assertSee('The rule name must not be greater than 15 characters.');     
+    }
+
+    public function test_edit_rule_endDate_before_start_date(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $rule = Rule::factory()->make();
+        $start_date = Carbon::create(2020, 2, 2, 0);
+        $end_date_pass = Carbon::create(2021, 2, 2, 0);
+        $end_date_fail = Carbon::create(2019, 2, 2, 0);
+
+
+        //Insert a rule
+        Livewire::test(NewRuleModal::class, [
+            'rule_name' => $rule->rule_name,
+            'start_date' => $start_date,
+            'end_date' => $end_date_pass,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule');
+
+
+        //Edit the rule to have a end date before start date
+        $newRule = Rule::factory()->make();
+        
+
+        Livewire::test(EditRules::class, [
+            'team' => $user->currentTeam,
+            'message' => $rule->id,
+            'rule_name' => $newRule->rule_name,
+            'start_date' => $start_date,
+            'end_date' => $end_date_fail,
+            'percentage' => $newRule->percentage,    
+            ])
+            ->call('editRule')
+            ->assertSee('The end date must be a date after or equal to start date.');     
+    }
+
+    public function test_edit_rule_exceeding_percentage(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $rule = Rule::factory()->make();
+
+        //Insert a rule
+        Livewire::test(NewRuleModal::class, [
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule');
+
+
+        //Edit the rule
+        $newRule = Rule::factory()->make();
+        $newRule->percentage= 1000;
+
+        Livewire::test(EditRules::class, [
+            'team' => $user->currentTeam,
+            'message' => $rule->id,
+            'rule_name' => $newRule->rule_name,
+            'start_date' => $newRule->start_date,
+            'end_date' => $newRule->end_date,
+            'percentage' => $newRule->percentage,    
+            ])
+            ->call('editRule')
+            ->assertSee('The percentage must be less than or equal 999.');     
+    }
+
+    public function test_edit_rule_negative_percentage(){
+        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+        $rule = Rule::factory()->make();
+
+        //Insert a rule
+        Livewire::test(NewRuleModal::class, [
+            'rule_name' => $rule->rule_name,
+            'start_date' => $rule->start_date,
+            'end_date' => $rule->end_date,
+            'percentage' => $rule->percentage
+            ])
+            ->call('insertRule');
+
+
+        //Edit the rule
+        $newRule = Rule::factory()->make();
+        $newRule->percentage= -1;
+
+        Livewire::test(EditRules::class, [
+            'team' => $user->currentTeam,
+            'message' => $rule->id,
+            'rule_name' => $newRule->rule_name,
+            'start_date' => $newRule->start_date,
+            'end_date' => $newRule->end_date,
+            'percentage' => $newRule->percentage,    
+            ])
+            ->call('editRule')
+            ->assertSee('The percentage must be greater than 0.');     
     }
 
 }
