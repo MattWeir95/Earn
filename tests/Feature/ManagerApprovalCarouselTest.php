@@ -41,8 +41,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         History::factory()->create([
             'team_user_id' => $team_user->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission
         ])->save();
 
@@ -64,8 +64,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         History::factory()->create([
             'team_user_id' => $team_user->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission
         ])->save();
 
@@ -75,8 +75,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         $dbAttributes = [
             'team_user_id' => $team_user->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission,
             'flagged' => 0,
             'approved' => 1
@@ -105,8 +105,8 @@ class ManagerApprovalCarouselTest extends TestCase
     
             History::factory()->create([
                 'team_user_id' => $employees[$i]->id,
-                'start_time' => now('AEST')->startOfMonth()->subMonth(),
-                'end_time' => now('AEST')->endOfMonth()->subMonth(),
+                'start_time' => now('AEST')->subMonth()->startOfMonth(),
+                'end_time' => now('AEST')->subMonth()->endOfMonth(),
                 'total_commission' => $test_commission
             ])->save();
         }
@@ -117,8 +117,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         $dbAttributes = [
             'team_user_id' => $employees[0]->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission,
             'flagged' => 0,
             'approved' => 1
@@ -143,8 +143,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         History::factory()->create([
             'team_user_id' => $team_user->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission
         ])->save();
 
@@ -154,8 +154,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         $dbAttributes = [
             'team_user_id' => $team_user->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission,
             'flagged' => 1,
             'approved' => 0
@@ -183,8 +183,8 @@ class ManagerApprovalCarouselTest extends TestCase
     
             History::factory()->create([
                 'team_user_id' => $employees[$i]->id,
-                'start_time' => now('AEST')->startOfMonth()->subMonth(),
-                'end_time' => now('AEST')->endOfMonth()->subMonth(),
+                'start_time' => now('AEST')->subMonth()->startOfMonth(),
+                'end_time' => now('AEST')->subMonth()->endOfMonth(),
                 'total_commission' => $test_commission
             ])->save();
         }
@@ -195,8 +195,8 @@ class ManagerApprovalCarouselTest extends TestCase
 
         $dbAttributes = [
             'team_user_id' => $employees[0]->id,
-            'start_time' => now('AEST')->startOfMonth()->subMonth(),
-            'end_time' => now('AEST')->endOfMonth()->subMonth(),
+            'start_time' => now('AEST')->subMonth()->startOfMonth(),
+            'end_time' => now('AEST')->subMonth()->endOfMonth(),
             'total_commission' => $test_commission,
             'flagged' => 1,
             'approved' => 0
