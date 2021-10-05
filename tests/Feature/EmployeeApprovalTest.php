@@ -68,8 +68,8 @@ class EmployeeApprovalTest extends TestCase
 
         //Previous Month
 
-        $start_time = now('AEST')->startOfMonth()->subMonth();
-        $end_time = now('AEST')->endOfMonth()->subMonth();
+        $start_time = now('AEST')->subMonth()->startOfMonth();
+        $end_time = now('AEST')->subMonth()->endOfMonth();
         History::factory()->create([
             'team_user_id' => $team_user->id,
             'start_time' => $start_time,
@@ -81,7 +81,7 @@ class EmployeeApprovalTest extends TestCase
             ->call('render')
             ->assertSeeHtml('id="approval-modal"')
             ->assertSeeHtml("Total: $" . $test_commission)
-            ->assertSeeHtml("Active Period: " . Carbon::parse($start_time)->toFormattedDateString() . "-" . Carbon::parse($end_time)->toFormattedDateString());
+            ->assertSeeHtml(Carbon::parse($start_time)->toFormattedDateString() . "-" . Carbon::parse($end_time)->toFormattedDateString());
     }
 
     //Commission can be approved
@@ -110,8 +110,8 @@ class EmployeeApprovalTest extends TestCase
         ])->save();
 
         //Previous Month
-        $start_time = now('AEST')->startOfMonth()->subMonth();
-        $end_time = now('AEST')->endOfMonth()->subMonth();
+        $start_time = now('AEST')->subMonth()->startOfMonth();
+        $end_time = now('AEST')->subMonth()->endOfMonth();
         History::factory()->create([
             'team_user_id' => $team_user->id,
             'start_time' => $start_time,
@@ -164,8 +164,8 @@ class EmployeeApprovalTest extends TestCase
         ])->save();
 
         //Previous Month
-        $start_time = now('AEST')->startOfMonth()->subMonth();
-        $end_time = now('AEST')->endOfMonth()->subMonth();
+        $start_time = now('AEST')->subMonth()->startOfMonth();
+        $end_time = now('AEST')->subMonth()->endOfMonth();
         History::factory()->create([
             'team_user_id' => $team_user->id,
             'start_time' => $start_time,
