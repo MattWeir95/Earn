@@ -54,4 +54,20 @@ class PopulateSales extends Command
             ->create();
         return 0;
     }
+
+    public static function handle_without_console($num_entries)
+    {
+        if (is_null(User::first())) {
+            $user = User::factory()->withPersonalTeam()->create();
+            $user->currentTeam->users()->attach(
+                User::factory()->withPersonalTeam()->create(),
+                ['role' => 'employee']
+            );
+        }
+        Sale::factory()
+            ->count($num_entries)
+            ->sequence(fn ($sequence) => ['date' => now('AEST')->subDays($sequence->index)])
+            ->create();
+        return 0;
+    }
 }
