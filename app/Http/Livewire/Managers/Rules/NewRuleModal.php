@@ -35,6 +35,18 @@ class NewRuleModal extends Component
             }
         return redirect('rules');
     }
+
+    public static function insert_without_check($name, $start, $end, $percentage) {
+        DB::table('rules')
+        ->insert([
+            'team_id' => auth()->user()->currentTeam->id,
+            'rule_name' => $name,
+            'start_date' => $start,
+            'end_date' => $end,
+            'active' => 1,
+            'percentage' => $percentage,
+        ]);
+    }
      
     public function render()
     {
