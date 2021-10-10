@@ -54,10 +54,10 @@ class PredictionController extends Controller
             ->where('end_time','<',now())
             ->orderBy('start_time','desc')
             ->take(6)
+            ->get()
             ->toArray();
         if (is_null($histories)) {
-            // return $team->min_target
-            return 0;
+            return $team->target_commission;
         }
         $normalised_histories = array_map(function ($history) use ($ens) {
             return $history['total_commission'] / $ens[substr($history['start_time'], 5, 2) - 1];
@@ -66,8 +66,7 @@ class PredictionController extends Controller
         for ($i = count($histories)-1; $i > 0; $i--) {
             $total = ($total * $beta) + ((1 - $beta) * $normalised_histories[$i]);
         }
-        // return max($total * $ens[now()->month-1],auth()->user()->currentTeam->min_target);
-        return $total * $ens[now()->month - 1];
+        return max($total * $ens[now()->month-1],$team->target_commission);
     }
 
     /**
