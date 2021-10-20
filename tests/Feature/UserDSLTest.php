@@ -20,7 +20,10 @@ class UserDSLTest extends TestCase
     {
         $user = User::factory()->withPersonalTeam()->create();
         $t_u_entries = TeamUser::where('user_id',$user->id)->get();
-        $this->assertEquals($t_u_entries,$user->team_user_entries()->get());
+        $this->assertCount(count($t_u_entries),$user->team_user_entries()->get());
+        for ($i=0; $i < count($t_u_entries); $i++) { 
+            $this->assertEquals($t_u_entries[$i]->id,$user->team_user_entries()->get()[$i]->id);
+        }
     }
     
     public function test_multiple_team_user_entries()
@@ -28,8 +31,10 @@ class UserDSLTest extends TestCase
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
         Team::factory()->create()->users()->attach($user,['role'=>'manager']);
         $t_u_entries = TeamUser::where('user_id',$user->id)->get();
-        $this->assertEquals($t_u_entries,$user->team_user_entries()->get());
-        $this->assertCount(2, $user->team_user_entries()->get());
+        $this->assertCount(count($t_u_entries), $user->team_user_entries()->get());
+        for ($i = 0; $i < count($t_u_entries); $i++) {
+            $this->assertEquals($t_u_entries[$i]->id, $user->team_user_entries()->get()[$i]->id);
+        }
     }
 
     public function test_multiple_with_non_matching()
@@ -38,8 +43,10 @@ class UserDSLTest extends TestCase
         Team::factory()->create()->users()->attach($user, ['role' => 'manager']);
         User::factory()->onTeam($user->currentTeam)->create();
         $t_u_entries = TeamUser::where('user_id', $user->id)->get();
-        $this->assertEquals($t_u_entries, $user->team_user_entries()->get());
-        $this->assertCount(3, TeamUser::all());
+        $this->assertCount(count($t_u_entries), $user->team_user_entries()->get());
+        for ($i = 0; $i < count($t_u_entries); $i++) {
+            $this->assertEquals($t_u_entries[$i]->id, $user->team_user_entries()->get()[$i]->id);
+        }
     }
 
     public function test_personal_team()
